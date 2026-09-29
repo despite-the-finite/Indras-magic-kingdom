@@ -1,0 +1,13 @@
+{
+  "id": "rainbow_ride",
+  "title_key": "rainbow_ride",
+  "icon": "rainbow",
+  "scene": "res://src/minigames/rainbow_ride.gd",
+  "duration_seconds": 100,
+  "requires_characters": ["lumi"],
+  "companion": "lumi",
+  "music": "ride_theme",
+  "intro_dialogue": "ride_intro",
+  "outro_dialogue": "ride_outro",
+  "reward": { "stars_per": 20, "max_magic_stars": 3 }
+}

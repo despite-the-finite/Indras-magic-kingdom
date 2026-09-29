@@ -1,0 +1,19 @@
+# Godot
+game/.godot/
+game/.import/
+*.translation
+export_credentials.cfg
+# Builds
+build/
+*.zip
+# Node / voice pipeline
+node_modules/
+tools/voice/.env
+.env
+# Dev scratch
+shots/
+*.tmp
+# OS
+Thumbs.db
+.DS_Store
+game/assets/audio/vo/_ph/

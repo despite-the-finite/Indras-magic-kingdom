@@ -1,0 +1,67 @@
+{
+  "id": "lumi",
+  "name": "Lumi",
+  "species": "unicorn",
+  "age": "baby",
+  "ui_color": "#c9a2ff",
+  "voice_key": "lumi",
+  "dialogue_file": "lumi",
+
+  "visual": {
+    "rig": "unicorn",
+    "model": "res://assets/models/characters/lumi/lumi.glb",
+    "colors": { "body": "#fff4fb", "body_shade": "#f3d9f5", "mane": ["#ff8fd2", "#b58cf2", "#6ec6f5"], "horn": "#ffe27a", "hoof": "#ffd7f0", "eye": "#7a4dd8" },
+    "scale": 1.0
+  },
+
+  "home": { "location": "unicorn_stable", "castle_feature": "unicorn_stable", "wander": ["garden", "stable"] },
+
+  "rescue": {
+    "quest": "lost_unicorn",
+    "region": "enchanted_forest",
+    "stars": 3,
+    "castle_arrival_dialogue": "lumi_arrives_castle"
+  },
+
+  "care": {
+    "location": "unicorn_stable",
+    "needs": [
+      { "id": "brush", "tool": "brush", "count": 4, "reaction": "shimmy",  "sfx": "brush", "star_on_first": false },
+      { "id": "feed",  "tool": "rainbow_apple", "count": 3, "reaction": "eat", "sfx": "munch" },
+      { "id": "hug",   "tool": "hug", "count": 3, "reaction": "hug", "sfx": "hug_chime" }
+    ],
+    "need_dialogue": {
+      "brush": "lumi_care_brush",
+      "feed": "lumi_care_feed",
+      "hug": "lumi_care_hug"
+    },
+    "all_done_dialogue": "lumi_care_done"
+  },
+
+  "friendship_quest": {
+    "quest": "moonflower_for_mama",
+    "ask_dialogue": "lumi_asks_help",
+    "stars": 3,
+    "reward_power": "rainbow"
+  },
+
+  "companion": {
+    "ability": "rainbow_bridge",
+    "ability_icon": "rainbow",
+    "ability_label_dialogue": "lumi_ability_hint",
+    "follow_distance": 2.2,
+    "speed": 4.4
+  },
+
+  "mini_adventures": ["rainbow_ride"],
+  "mini_adventure_unlock_stage": 6,
+
+  "animations": {
+    "idle": "idle", "walk": "walk", "run": "gallop",
+    "happy": "happy_jump", "sad": "cry", "hopeful": "hopeful",
+    "look_up": "look_up", "eat": "eat", "hug": "hug", "sleep": "sleep",
+    "trapped": "trapped", "cheer": "shimmy"
+  },
+
+  "rewards": { "rescue_stars": 3, "quest_stars": 3, "castle_unlock": "unicorn_stable", "power": "rainbow" }
+}

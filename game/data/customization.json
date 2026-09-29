@@ -1,0 +1,87 @@
+{
+  "default_appearance": {
+    "skin": "honey", "face": "sparkle", "hair_style": "long", "hair_color": "chestnut",
+    "dress": "rose_gown", "boots": "pink", "crown": "tiara", "cape": "rose", "accessory": "wand_star"
+  },
+
+  "categories": [
+    { "id": "skin",        "icon": "face" },
+    { "id": "face",        "icon": "eye" },
+    { "id": "hair_style",  "icon": "hair" },
+    { "id": "hair_color",  "icon": "drop" },
+    { "id": "dress",       "icon": "dress" },
+    { "id": "boots",       "icon": "boot" },
+    { "id": "crown",       "icon": "crown" },
+    { "id": "cape",        "icon": "cape" },
+    { "id": "accessory",   "icon": "wand" }
+  ],
+
+  "options": {
+    "skin": [
+      { "id": "pearl",   "color": "#f7dccb" },
+      { "id": "peach",   "color": "#f0bf9b" },
+      { "id": "sand",    "color": "#e0a878" },
+      { "id": "honey",   "color": "#c98b57" },
+      { "id": "caramel", "color": "#a96a3e" },
+      { "id": "cocoa",   "color": "#7a4a2d" },
+      { "id": "mocha",   "color": "#5a3421" },
+      { "id": "ebony",   "color": "#3e2418" }
+    ],
+    "face": [
+      { "id": "sparkle", "eye": "#6b3f2a", "eye_size": 1.0,  "freckles": false, "blush": "#ff8fa8", "lashes": 1.0 },
+      { "id": "sky",     "eye": "#3f8de0", "eye_size": 1.05, "freckles": false, "blush": "#ff9bb0", "lashes": 0.8 },
+      { "id": "leaf",    "eye": "#3faa72", "eye_size": 1.0,  "freckles": true,  "blush": "#ff9a8a", "lashes": 0.8 },
+      { "id": "amber",   "eye": "#d68a2a", "eye_size": 1.1,  "freckles": false, "blush": "#ff8fa8", "lashes": 1.0 },
+      { "id": "violet",  "eye": "#8a55e0", "eye_size": 1.05, "freckles": false, "blush": "#ff8fd0", "lashes": 1.0 },
+      { "id": "starry",  "eye": "#2b2340", "eye_size": 1.15, "freckles": true,  "blush": "#ff7f9a", "lashes": 1.0 }
+    ],
+    "hair_style": [
+      { "id": "long" }, { "id": "pigtails" }, { "id": "bun" }, { "id": "puffs" }, { "id": "curls" }, { "id": "braid" }
+    ],
+    "hair_color": [
+      { "id": "black",    "color": "#2a1b1a" },
+      { "id": "brown",    "color": "#5b3a29" },
+      { "id": "chestnut", "color": "#8b4f2a" },
+      { "id": "blonde",   "color": "#e4b65b" },
+      { "id": "ginger",   "color": "#c8582d" },
+      { "id": "silver",   "color": "#d9dde6" },
+      { "id": "pink",     "color": "#f58ac0" },
+      { "id": "lilac",    "color": "#b98cf0" },
+      { "id": "sky",      "color": "#7cc8f5" },
+      { "id": "mint",     "color": "#7fe0b5" }
+    ],
+    "dress": [
+      { "id": "rose_gown",   "type": "gown",  "c1": "#ff8fbf", "c2": "#ffd6ec" },
+      { "id": "lilac_gown",  "type": "gown",  "c1": "#b58cf2", "c2": "#e8d8ff" },
+      { "id": "sky_gown",    "type": "gown",  "c1": "#6ec6f5", "c2": "#d6f1ff" },
+      { "id": "mint_gown",   "type": "gown",  "c1": "#66d9b0", "c2": "#d7fff0" },
+      { "id": "sun_gown",    "type": "gown",  "c1": "#ffc94d", "c2": "#fff0bf" },
+      { "id": "ruby_gown",   "type": "gown",  "c1": "#f0507a", "c2": "#ffc2d2" },
+      { "id": "sparkle_tutu","type": "tutu",  "c1": "#ff9bd2", "c2": "#ffe0f2" },
+      { "id": "explorer",    "type": "pants", "c1": "#4fc3a8", "c2": "#a97b50" }
+    ],
+    "boots": [
+      { "id": "pink",   "color": "#ff8fbf" },
+      { "id": "gold",   "color": "#ffc94d" },
+      { "id": "blue",   "color": "#6ec6f5" },
+      { "id": "brown",  "color": "#a97b50" },
+      { "id": "purple", "color": "#b58cf2" },
+      { "id": "white",  "color": "#fdf6ff" }
+    ],
+    "crown": [
+      { "id": "tiara" }, { "id": "crown" }, { "id": "flowers" }, { "id": "star_circlet" }, { "id": "moon_tiara" }
+    ],
+    "cape": [
+      { "id": "none",   "color": "#000000" },
+      { "id": "rose",   "color": "#ff6fae" },
+      { "id": "lilac",  "color": "#a072ee" },
+      { "id": "sky",    "color": "#4fb3f0" },
+      { "id": "gold",   "color": "#ffbf3f" },
+      { "id": "forest", "color": "#3fbf87" },
+      { "id": "night",  "color": "#4b3a9a" }
+    ],
+    "accessory": [
+      { "id": "wand_star" }, { "id": "wand_heart" }, { "id": "wings" }, { "id": "butterfly" }, { "id": "necklace" }
+    ]
+  }
+}

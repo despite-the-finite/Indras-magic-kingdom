@@ -1,0 +1,73 @@
+{
+  "defaults": { "character": "lumi", "emotion": "happy", "once": false },
+  "sequences": {
+
+    "lumi_crying": [
+      { "id": "lumi_crying_01", "emotion": "sad", "animation": "cry", "text": "Mama? Mama... I'm stuck. Somebody, please help!", "trigger": "zone:lumi_call" },
+      { "id": "lumi_crying_02", "character": "princess", "emotion": "worried", "animation": "surprised", "text": "That's Lumi! I'm coming!" }
+    ],
+
+    "lumi_arrives_castle": [
+      { "id": "lumi_arrives_castle_01", "emotion": "wonder", "animation": "look_up", "text": "Wow! Is this really your castle?" }
+    ],
+
+    "lumi_care_brush": [
+      { "id": "lumi_care_brush_01", "emotion": "joyful", "animation": "shimmy", "text": "Ooh, that feels so nice! Now I'm all sparkly!" }
+    ],
+    "lumi_care_feed": [
+      { "id": "lumi_care_feed_01", "emotion": "joyful", "animation": "happy_jump", "text": "Yummy rainbow apples! Thank you!" }
+    ],
+    "lumi_care_hug": [
+      { "id": "lumi_care_hug_01", "emotion": "joyful", "animation": "hug", "text": "Hugs are the best! I love you, princess!" }
+    ],
+    "lumi_care_done": [
+      { "id": "lumi_care_done_01", "emotion": "joyful", "animation": "happy_jump", "text": "You're my very best friend!" }
+    ],
+
+    "lumi_asks_help": [
+      { "id": "lumi_asks_help_01", "emotion": "excited", "animation": "happy_jump", "text": "Princess! Princess! I remembered why I went into the forest!", "trigger": "friendship:ready" },
+      { "id": "lumi_asks_help_02", "emotion": "excited", "animation": "look_up", "text": "I was looking for a Moonflower for my mama!" },
+      { "id": "lumi_asks_help_03", "emotion": "hopeful", "animation": "hopeful", "text": "Will you help me find one?" },
+      { "id": "lumi_asks_help_04", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "Of course I will! Friends help each other!" },
+      { "id": "lumi_asks_help_05", "character": "narrator", "emotion": "excited", "text": "Tap the map, and off they go!" }
+    ],
+    "lumi_ability_hint": [
+      { "id": "lumi_ability_hint_01", "emotion": "hopeful", "animation": "hopeful", "text": "My horn can make rainbows!" }
+    ],
+
+    "ledge_too_high": [
+      { "id": "ledge_too_high_01", "character": "princess", "emotion": "curious", "animation": "curious", "text": "That ledge is too high for me to reach." },
+      { "id": "ledge_too_high_02", "emotion": "hopeful", "animation": "hopeful", "text": "Maybe I can help! My horn can make rainbows!" }
+    ],
+    "rainbow_bridge_made": [
+      { "id": "rainbow_bridge_made_01", "emotion": "joyful", "animation": "happy_jump", "text": "I did it! A rainbow bridge!" },
+      { "id": "rainbow_bridge_made_02", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "Wow, Lumi! You're amazing!" }
+    ],
+    "log_too_heavy": [
+      { "id": "log_too_heavy_01", "emotion": "worried", "animation": "hopeful", "text": "This log is too big for me to move." },
+      { "id": "log_too_heavy_02", "character": "princess", "emotion": "determined", "animation": "cast", "text": "That's okay. I have Flower Magic!" }
+    ],
+    "log_lifted": [
+      { "id": "log_lifted_01", "emotion": "joyful", "animation": "happy_jump", "text": "Thank you, princess! We make a great team!" }
+    ],
+    "hollow_is_dark": [
+      { "id": "hollow_is_dark_01", "emotion": "whisper", "animation": "hopeful", "text": "It's very dark in there..." },
+      { "id": "hollow_is_dark_02", "character": "princess", "emotion": "gentle", "animation": "cast", "text": "Don't worry, Lumi. I have Star Light!" }
+    ],
+    "moonflower_found": [
+      { "id": "moonflower_found_01", "emotion": "whisper", "animation": "look_up", "text": "The Moonflower! But it's fast asleep." },
+      { "id": "moonflower_found_02", "character": "princess", "emotion": "excited", "animation": "curious", "text": "Ready, Lumi? Let's shine together!" }
+    ],
+
+    "ride_intro": [
+      { "id": "ride_intro_01", "emotion": "excited", "animation": "happy_jump", "text": "Let's go for a rainbow ride! Hold on tight!" }
+    ],
+    "ride_outro": [
+      { "id": "ride_outro_01", "emotion": "joyful", "animation": "happy_jump", "text": "That was so much fun! Let's do it again!" }
+    ],
+
+    "lumi_idle_barks": [
+      { "id": "lumi_bark_01", "emotion": "happy", "animation": "shimmy", "text": "Hee hee!" }
+    ]
+  }
+}

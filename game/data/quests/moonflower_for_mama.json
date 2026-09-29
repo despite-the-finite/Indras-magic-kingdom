@@ -1,0 +1,47 @@
+{
+  "id": "moonflower_for_mama",
+  "kind": "friendship",
+  "character": "lumi",
+  "region": "enchanted_forest",
+  "level": "moonlit_forest",
+  "music": "forest_moonlit",
+  "ambience": ["night_crickets", "forest_wind"],
+  "intro_dialogue": "moonlit_start",
+  "companion": "lumi",
+  "reward": { "stars": 3, "character_stage": "quest_done", "power": "rainbow" },
+
+  "steps": [
+    {
+      "id": "cross_ledge",
+      "target": "ledge_rainbow",
+      "complete_on": ["power:rainbow_bridge:ledge_rainbow"],
+      "hint": { "voice": "hint_ledge", "voice_alt": "hint_ledge_2", "target": "ledge_rainbow" },
+      "dialogue_on_start": "ledge_too_high",
+      "dialogue_on_complete": "rainbow_bridge_made"
+    },
+    {
+      "id": "lift_log",
+      "target": "fallen_log",
+      "complete_on": ["power:flower:fallen_log"],
+      "hint": { "voice": "hint_log", "voice_alt": "hint_log_2", "target": "fallen_log" },
+      "dialogue_on_start": "log_too_heavy",
+      "dialogue_on_complete": "log_lifted"
+    },
+    {
+      "id": "light_the_dark",
+      "target": "dark_hollow",
+      "complete_on": ["power:starlight:dark_hollow"],
+      "hint": { "voice": "hint_dark", "voice_alt": "hint_dark_2", "target": "dark_hollow" },
+      "dialogue_on_start": "hollow_is_dark",
+      "dialogue_on_complete": "hollow_lit"
+    },
+    {
+      "id": "wake_moonflower",
+      "target": "moonflower",
+      "complete_on": ["power:coop_shine:moonflower"],
+      "hint": { "voice": "hint_moonflower", "voice_alt": "hint_moonflower_2", "target": "moonflower" },
+      "dialogue_on_start": "moonflower_found",
+      "dialogue_on_complete": "moonflower_blooms"
+    }
+  ]
+}

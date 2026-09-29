@@ -1,0 +1,32 @@
+{
+  "_comment": "Voice casting for ElevenLabs. Fill in each voice_id (ElevenLabs Voice Library > Add to My Voices > copy the ID). No secrets belong in this file.",
+  "model": "eleven_multilingual_v2",
+  "output_format": "mp3_44100_128",
+  "use_audio_tags": false,
+
+  "voices": {
+    "narrator": { "voice_id": "REPLACE_WITH_VOICE_ID", "role": "warm, unhurried storyteller (think bedtime story)", "stability": 0.55, "similarity_boost": 0.8, "style": 0.25, "speed": 0.94 },
+    "princess": { "voice_id": "REPLACE_WITH_VOICE_ID", "role": "bright, brave, curious little girl (short exclamations)", "stability": 0.4, "similarity_boost": 0.8, "style": 0.45, "speed": 1.0 },
+    "lumi":     { "voice_id": "REPLACE_WITH_VOICE_ID", "role": "baby unicorn: sweet, breathy, very expressive", "stability": 0.35, "similarity_boost": 0.75, "style": 0.55, "speed": 1.0 },
+    "clover":   { "voice_id": "REPLACE_WITH_VOICE_ID", "role": "small friendly rabbit: quick, twittery, kind", "stability": 0.4, "similarity_boost": 0.75, "style": 0.4, "speed": 1.06 },
+    "luna":     { "voice_id": "REPLACE_WITH_VOICE_ID", "role": "Lumi's mama: gentle, warm, motherly", "stability": 0.6, "similarity_boost": 0.8, "style": 0.2, "speed": 0.92 }
+  },
+
+  "emotions": {
+    "excited":    { "stability_delta": -0.12, "style_delta": 0.2,  "speed_mult": 1.06 },
+    "joyful":     { "stability_delta": -0.12, "style_delta": 0.25, "speed_mult": 1.04 },
+    "surprised":  { "stability_delta": -0.15, "style_delta": 0.25 },
+    "wonder":     { "stability_delta": 0.05,  "style_delta": 0.15, "speed_mult": 0.94 },
+    "worried":    { "stability_delta": -0.05, "style_delta": 0.2,  "speed_mult": 0.97 },
+    "sad":        { "stability_delta": -0.1,  "style_delta": 0.3,  "speed_mult": 0.9 },
+    "hopeful":    { "stability_delta": -0.05, "style_delta": 0.2 },
+    "whisper":    { "stability_delta": 0.2,   "style_delta": 0.0,  "speed_mult": 0.9 },
+    "gentle":     { "stability_delta": 0.1,   "style_delta": 0.0,  "speed_mult": 0.95 },
+    "determined": { "stability_delta": 0.05,  "style_delta": 0.15 }
+  },
+
+  "emotion_tags": {
+    "excited": "[excited]", "joyful": "[happy]", "surprised": "[surprised]", "wonder": "[amazed]",
+    "worried": "[worried]", "sad": "[sad]", "hopeful": "[hopeful]", "whisper": "[whispers]", "gentle": "[softly]"
+  }
+}

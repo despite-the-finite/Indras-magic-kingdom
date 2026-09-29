@@ -1,0 +1,113 @@
+{
+  "defaults": { "character": "narrator", "emotion": "warm", "once": false },
+  "sequences": {
+
+    "customize_intro": [
+      { "id": "customize_intro_01", "emotion": "excited", "text": "Hello, little princess! Let's make you look just right.", "trigger": "screen:customize" },
+      { "id": "customize_intro_02", "text": "Tap the pictures you like!" }
+    ],
+    "customize_pick_bark": [
+      { "id": "customize_pick_01", "text": "Ooh, lovely!" }
+    ],
+    "customize_done": [
+      { "id": "customize_done_01", "emotion": "joyful", "text": "Oh, how lovely you look! Let's go to your castle!" }
+    ],
+
+    "castle_intro": [
+      { "id": "castle_intro_01", "text": "Welcome to your castle! It is big, and beautiful, and a little bit quiet.", "camera": "castle_reveal" },
+      { "id": "castle_intro_02", "character": "princess", "emotion": "curious", "animation": "curious", "text": "I wish I had some friends to share it with." },
+      { "id": "castle_intro_03", "emotion": "excited", "text": "Just then, a sparkly butterfly named Flutter came dancing down from the sky!", "camera": "flutter_arrives" },
+      { "id": "castle_intro_04", "emotion": "worried", "text": "Flutter had big news. A baby unicorn is lost in the Enchanted Forest!" },
+      { "id": "castle_intro_05", "character": "princess", "emotion": "determined", "animation": "surprised", "text": "Oh no! Let's go and help!" },
+      { "id": "castle_intro_06", "emotion": "excited", "text": "Tap the magic map, and off you go!" }
+    ],
+    "castle_hint_map": [
+      { "id": "castle_hint_map_01", "text": "Tap the glowing map!" }
+    ],
+    "map_intro": [
+      { "id": "map_intro_01", "emotion": "excited", "text": "Here is the magic map! Tap the glowing forest." }
+    ],
+    "map_locked_bark": [
+      { "id": "map_locked_01", "emotion": "gentle", "text": "Shh, that place is still asleep. Maybe one day!" }
+    ],
+
+    "forest_arrive": [
+      { "id": "forest_arrive_01", "emotion": "wonder", "text": "The Enchanted Forest! Giant flowers, glowing mushrooms, and somewhere in here, a little lost unicorn.", "camera": "forest_reveal" },
+      { "id": "forest_arrive_02", "character": "princess", "emotion": "curious", "animation": "curious", "text": "Lumi? Lumi, where are you?" }
+    ],
+    "found_hoofprints": [
+      { "id": "found_hoofprints_01", "character": "princess", "emotion": "excited", "animation": "surprised", "text": "Sparkly hoofprints! Lumi must have come this way." }
+    ],
+    "trail_progress_bark": [
+      { "id": "trail_progress_01", "character": "princess", "emotion": "curious", "text": "The trail goes on!" }
+    ],
+
+    "forest_secret_found": [
+      { "id": "forest_secret_01", "emotion": "wonder", "text": "A secret glade! Look, a shiny Magic Star!" }
+    ],
+
+    "river_broken_bridge": [
+      { "id": "river_broken_01", "emotion": "worried", "text": "Oh no! The bridge over the river is broken." },
+      { "id": "river_broken_02", "character": "princess", "emotion": "curious", "animation": "curious", "text": "How can I get across? I know! Flower Magic!" }
+    ],
+    "bridge_grown": [
+      { "id": "bridge_grown_01", "emotion": "wonder", "text": "Vines grew and grew, and flowers bloomed all along the way." },
+      { "id": "bridge_grown_02", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "A flower bridge! It's beautiful!" }
+    ],
+
+    "lumi_rescued": [
+      { "id": "lumi_rescued_01", "emotion": "wonder", "text": "The thorny vines twirled and twinkled, and turned into flowers.", "camera": "rescue_orbit" },
+      { "id": "lumi_rescued_02", "character": "lumi", "emotion": "joyful", "animation": "happy_jump", "text": "You found me! You found me!" },
+      { "id": "lumi_rescued_03", "character": "princess", "emotion": "gentle", "animation": "hug", "text": "Are you okay, Lumi?" },
+      { "id": "lumi_rescued_04", "character": "lumi", "emotion": "joyful", "animation": "hug", "text": "I am now! Thank you, princess!" },
+      { "id": "lumi_rescued_05", "emotion": "wonder", "text": "And a Magic Star appeared, shining brighter than all the rest.", "camera": "star_rise" },
+      { "id": "lumi_rescued_06", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "Come on, Lumi. Let's go home to the castle!" }
+    ],
+
+    "castle_after_rescue": [
+      { "id": "castle_after_rescue_01", "emotion": "wonder", "text": "Back at the castle, the magical stable opened its doors, just for Lumi.", "camera": "stable_reveal" },
+      { "id": "castle_after_rescue_02", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "This is your new home, Lumi!" },
+      { "id": "castle_after_rescue_03", "character": "lumi", "emotion": "joyful", "animation": "happy_jump", "text": "It's so pretty! Thank you!" },
+      { "id": "castle_after_rescue_04", "text": "Lumi looks tired. Let's take good care of her!" }
+    ],
+    "care_intro": [
+      { "id": "care_intro_01", "emotion": "gentle", "text": "Tap the brush, the apple, and the heart." }
+    ],
+    "care_hint_brush": [ { "id": "care_hint_brush_01", "text": "Tap the brush, then tap Lumi." } ],
+    "care_hint_feed":  [ { "id": "care_hint_feed_01",  "text": "Tap the apple, then tap Lumi." } ],
+    "care_hint_hug":   [ { "id": "care_hint_hug_01",   "text": "Tap the heart, and give Lumi a hug." } ],
+    "care_best_friends": [
+      { "id": "care_best_friends_01", "emotion": "wonder", "text": "Lumi and the princess were now the very best of friends." }
+    ],
+
+    "star_first": [
+      { "id": "star_first_01", "emotion": "joyful", "text": "You got a Magic Star! Look how your crown sparkles!" }
+    ],
+
+    "moonlit_start": [
+      { "id": "moonlit_start_01", "emotion": "wonder", "text": "That night, the moon rose high over the forest, and everything began to glow.", "camera": "moonlit_reveal" },
+      { "id": "moonlit_start_02", "character": "lumi", "emotion": "excited", "animation": "happy_jump", "text": "The Moonflower only grows in the moonlight. Follow me!" },
+      { "id": "moonlit_start_03", "character": "princess", "emotion": "joyful", "animation": "wave", "text": "Let's go, Lumi!" }
+    ],
+    "hollow_lit": [
+      { "id": "hollow_lit_01", "emotion": "wonder", "text": "The stars twinkled, and a glowing path appeared." },
+      { "id": "hollow_lit_02", "character": "lumi", "emotion": "excited", "animation": "happy_jump", "text": "Look! Sparkly mushrooms! This way!" }
+    ],
+    "moonflower_blooms": [
+      { "id": "moonflower_blooms_01", "emotion": "wonder", "text": "Moonlight from the horn, and starlight from the wand, and the Moonflower opened its silver petals.", "camera": "bloom_orbit" },
+      { "id": "moonflower_blooms_02", "character": "lumi", "emotion": "joyful", "animation": "happy_jump", "text": "We found it! Mama is going to love it!" },
+      { "id": "moonflower_blooms_03", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "Let's take it home!" }
+    ],
+
+    "mama_arrives": [
+      { "id": "mama_arrives_01", "emotion": "wonder", "text": "When they got back, someone very special was waiting at the castle gate." },
+      { "id": "mama_arrives_02", "character": "luna", "emotion": "gentle", "animation": "happy", "text": "Lumi! My darling!" },
+      { "id": "mama_arrives_03", "character": "lumi", "emotion": "joyful", "animation": "happy_jump", "text": "Mama! I brought you a Moonflower for your birthday!" },
+      { "id": "mama_arrives_04", "character": "luna", "emotion": "gentle", "animation": "happy", "text": "What a wonderful gift! And what wonderful friends you have." },
+      { "id": "mama_arrives_05", "emotion": "wonder", "text": "Lumi shared her rainbow magic with the princess. Now she could make rainbows, too!", "camera": "rainbow_gift" }
+    ],
+    "rainbow_ride_unlocked": [
+      { "id": "rainbow_ride_unlocked_01", "character": "lumi", "emotion": "excited", "animation": "happy_jump", "text": "Do you want to go for a rainbow ride? Come and find me at the stable!" }
+    ]
+  }
+}

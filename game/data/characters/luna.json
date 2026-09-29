@@ -1,0 +1,15 @@
+{
+  "id": "luna",
+  "name": "Luna",
+  "species": "unicorn",
+  "age": "adult",
+  "kind": "npc",
+  "role": "Lumi's mama",
+  "ui_color": "#b8a0f0",
+  "voice_key": "luna",
+  "visual": {
+    "rig": "unicorn",
+    "colors": { "body": "#f6efff", "body_shade": "#dccdf5", "mane": ["#6ec6f5", "#b58cf2", "#ff8fd2"], "horn": "#fff0a0", "hoof": "#e8d8ff", "eye": "#4d7ad8" },
+    "scale": 1.45
+  }
+}

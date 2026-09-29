@@ -1,0 +1,34 @@
+{
+  "defaults": { "character": "narrator", "emotion": "gentle", "once": false, "kind": "hint" },
+  "sequences": {
+
+    "hint_hoofprints":     [ { "id": "hint_hoofprints_01",     "text": "Look! Sparkly hoofprints!" } ],
+    "hint_hoofprints_2":   [ { "id": "hint_hoofprints_2_01",   "text": "Walk over to the glowing hoofprints." } ],
+    "hint_follow_trail":   [ { "id": "hint_follow_trail_01",   "text": "Follow the hoofprints. Where do they go?" } ],
+    "hint_follow_trail_2": [ { "id": "hint_follow_trail_2_01", "text": "Keep going. The trail goes on and on." } ],
+    "hint_rabbit":         [ { "id": "hint_rabbit_01",         "text": "Look, a little rabbit! Say hello with your magic." } ],
+    "hint_rabbit_2":       [ { "id": "hint_rabbit_2_01",       "text": "Tap the magic paw, to talk to the rabbit." } ],
+    "hint_branch":         [ { "id": "hint_branch_01",         "text": "That big branch looks heavy. Can you give it a push?" } ],
+    "hint_branch_2":       [ { "id": "hint_branch_2_01",       "text": "Go to the big branch, and push it." } ],
+    "hint_bridge":         [ { "id": "hint_bridge_01",         "text": "Use Flower Magic to mend the bridge!" } ],
+    "hint_bridge_2":       [ { "id": "hint_bridge_2_01",       "text": "Tap the magic flower, and grow a bridge." } ],
+    "hint_keep_going":     [ { "id": "hint_keep_going_01",     "text": "What's that sound? Keep going across the bridge." } ],
+    "hint_keep_going_2":   [ { "id": "hint_keep_going_2_01",   "text": "Someone is calling. Keep going that way." } ],
+    "hint_thorns":         [ { "id": "hint_thorns_01",         "text": "Poor Lumi is stuck! Use Flower Magic on the thorns." } ],
+    "hint_thorns_2":       [ { "id": "hint_thorns_2_01",       "text": "Tap the magic flower, to help Lumi." } ],
+
+    "hint_ledge":          [ { "id": "hint_ledge_01",          "text": "Look, Lumi's horn is glowing! Tap the rainbow." } ],
+    "hint_ledge_2":        [ { "id": "hint_ledge_2_01",        "text": "Tap the rainbow, and Lumi will help." } ],
+    "hint_log":            [ { "id": "hint_log_01",            "text": "Use Flower Magic to lift the log." } ],
+    "hint_log_2":          [ { "id": "hint_log_2_01",          "text": "Tap the magic flower, near the log." } ],
+    "hint_dark":           [ { "id": "hint_dark_01",           "text": "It's dark in there. Use Star Light!" } ],
+    "hint_dark_2":         [ { "id": "hint_dark_2_01",         "text": "Tap the magic star, to make some light." } ],
+    "hint_moonflower":     [ { "id": "hint_moonflower_01",     "text": "Use your Star Light, and Lumi will help!" } ],
+    "hint_moonflower_2":   [ { "id": "hint_moonflower_2_01",   "text": "Tap the magic star, next to the Moonflower." } ],
+
+    "hint_secret_hollow":  [ { "id": "hint_secret_hollow_01",  "text": "That old tree looks funny. Is there something hiding inside?" } ],
+    "hint_castle_stable":  [ { "id": "hint_castle_stable_01",  "text": "Lumi is waiting in the stable. Go and say hello!" } ],
+    "hint_ride":           [ { "id": "hint_ride_01",           "text": "Tap the rainbow, to go for a ride." } ],
+    "hint_go_right":       [ { "id": "hint_go_right_01",       "text": "Let's explore! Walk that way." } ]
+  }
+}

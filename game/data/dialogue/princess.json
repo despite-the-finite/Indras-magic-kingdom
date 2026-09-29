@@ -1,0 +1,17 @@
+{
+  "defaults": { "character": "princess", "emotion": "happy", "once": false },
+  "sequences": {
+    "princess_fall_rescued": [
+      { "id": "princess_fall_rescued_01", "emotion": "joyful", "animation": "giggle", "text": "Hee hee! Thank you, Flutter!" }
+    ],
+    "princess_magic_first": [
+      { "id": "princess_magic_first_01", "emotion": "excited", "animation": "cast", "text": "I can feel the magic!" }
+    ],
+    "princess_yay": [
+      { "id": "princess_yay_01", "emotion": "joyful", "animation": "celebrate", "text": "Yay!" }
+    ],
+    "princess_ride": [
+      { "id": "princess_ride_01", "emotion": "joyful", "animation": "celebrate", "text": "Wheee! We're flying!" }
+    ]
+  }
+}

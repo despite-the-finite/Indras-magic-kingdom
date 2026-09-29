@@ -1,0 +1,12 @@
+{
+  "crown_thresholds": [0, 1, 4, 8, 14, 22],
+  "crown_levels": [
+    { "level": 0, "name": "simple", "desc": "plain gold crown" },
+    { "level": 1, "name": "star_lit", "desc": "first star glows on the crown" },
+    { "level": 2, "name": "gems", "desc": "gems appear" },
+    { "level": 3, "name": "sparkles", "desc": "sparkle aura" },
+    { "level": 4, "name": "butterflies", "desc": "butterflies circle the crown" },
+    { "level": 5, "name": "rainbow", "desc": "rainbow arc rises above the crown" }
+  ],
+  "star_values": { "help_animal": 1, "secret": 1, "rescue": 3, "friendship_quest": 3, "mini_adventure_max": 3 }
+}

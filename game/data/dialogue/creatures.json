@@ -1,0 +1,21 @@
+{
+  "defaults": { "emotion": "happy", "once": false },
+  "sequences": {
+
+    "rabbit_explains": [
+      { "id": "rabbit_explains_01", "character": "clover", "emotion": "worried", "animation": "worried", "text": "Oh, hello, princess! A big branch fell in front of my burrow, and I can't get home." },
+      { "id": "rabbit_explains_02", "character": "princess", "emotion": "gentle", "animation": "wave", "text": "Don't worry, Clover. I'll help you!" }
+    ],
+    "rabbit_thanks": [
+      { "id": "rabbit_thanks_01", "character": "clover", "emotion": "joyful", "animation": "happy_hop", "text": "Thank you, thank you! I saw a little unicorn run by. She went toward the river!" },
+      { "id": "rabbit_thanks_02", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "Thank you, Clover! I'll find her." }
+    ],
+    "rabbit_bark": [
+      { "id": "rabbit_bark_01", "character": "clover", "emotion": "happy", "animation": "happy_hop", "text": "Good luck, princess!" }
+    ],
+
+    "luna_bark": [
+      { "id": "luna_bark_01", "character": "luna", "emotion": "gentle", "animation": "happy", "text": "Thank you, dear princess." }
+    ]
+  }
+}

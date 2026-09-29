@@ -1,0 +1,10 @@
+{
+  "id": "clover",
+  "name": "Clover",
+  "species": "rabbit",
+  "kind": "npc",
+  "role": "Enchanted Forest rabbit, helped in Lost Unicorn",
+  "ui_color": "#f0c8a0",
+  "voice_key": "clover",
+  "visual": { "rig": "rabbit", "colors": { "fur": "#f6e6d4" }, "scale": 1.0 }
+}

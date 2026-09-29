@@ -1,0 +1,18 @@
+{
+  "regions": [
+    { "id": "castle", "name": "Princess Castle", "map_pos": [0.0, 0.0], "palette": ["#ffd1e8", "#fff2b8", "#b58cf2"], "icon": "castle", "available": true, "is_home": true },
+    { "id": "enchanted_forest", "name": "Enchanted Forest", "map_pos": [-3.6, -1.8], "palette": ["#7fe0a0", "#3fb37f", "#ffe27a"], "icon": "flower", "available": true, "quest": "lost_unicorn", "quest_after": "moonflower_for_mama" },
+    { "id": "dragon_mountain", "name": "Dragon Mountain", "map_pos": [3.6, -2.4], "palette": ["#ff9b6a", "#c96b5a", "#ffd27a"], "icon": "dragon", "available": false },
+    { "id": "mermaid_lagoon", "name": "Mermaid Lagoon", "map_pos": [-4.6, 2.4], "palette": ["#6ee7f5", "#4aa8f0", "#ffd0e8"], "icon": "shell", "available": false },
+    { "id": "rainbow_islands", "name": "Rainbow Islands", "map_pos": [0.4, -3.9], "palette": ["#ffd1f0", "#a8e6ff", "#fff2a8"], "icon": "rainbow", "available": false },
+    { "id": "snowflake_kingdom", "name": "Snowflake Kingdom", "map_pos": [4.4, 2.0], "palette": ["#e6f6ff", "#a8d8ff", "#ffffff"], "icon": "snowflake", "available": false },
+    { "id": "moonlight_kingdom", "name": "Moonlight Kingdom", "map_pos": [-0.6, 3.6], "palette": ["#7a5cd6", "#b58cf2", "#ffe27a"], "icon": "moon", "available": false }
+  ],
+
+  "castle_features": [
+    { "id": "unicorn_stable", "name": "Magical Stable", "requires_character": "lumi", "location": "castle_west", "icon": "horseshoe" },
+    { "id": "dragon_tower", "name": "Dragon Tower", "requires_character": "dragon", "location": "castle_east_tower", "icon": "dragon" },
+    { "id": "mermaid_lagoon", "name": "Mermaid Lagoon", "requires_character": "mermaid", "location": "castle_pool", "icon": "shell" },
+    { "id": "fairy_garden", "name": "Fairy Garden", "requires_character": "fairy", "location": "castle_garden", "icon": "flower" }
+  ]
+}

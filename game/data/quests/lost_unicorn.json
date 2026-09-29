@@ -1,0 +1,63 @@
+{
+  "id": "lost_unicorn",
+  "kind": "rescue",
+  "character": "lumi",
+  "region": "enchanted_forest",
+  "level": "forest_rescue",
+  "music": "forest_explore",
+  "ambience": ["forest_birds", "forest_wind"],
+  "intro_dialogue": "forest_arrive",
+  "reward": { "stars": 3, "character_stage": "rescued" },
+
+  "steps": [
+    {
+      "id": "find_hoofprints",
+      "target": "hoofprints_1",
+      "complete_on": ["interact:hoofprints_1"],
+      "hint": { "voice": "hint_hoofprints", "voice_alt": "hint_hoofprints_2", "target": "hoofprints_1" },
+      "dialogue_on_complete": "found_hoofprints"
+    },
+    {
+      "id": "follow_trail",
+      "target": "hoofprints_3",
+      "complete_on": ["interact:hoofprints_3"],
+      "hint": { "voice": "hint_follow_trail", "voice_alt": "hint_follow_trail_2", "target": "hoofprints_2" }
+    },
+    {
+      "id": "talk_to_rabbit",
+      "target": "rabbit",
+      "complete_on": ["power:animals:rabbit"],
+      "hint": { "voice": "hint_rabbit", "voice_alt": "hint_rabbit_2", "target": "rabbit" },
+      "dialogue_on_complete": "rabbit_explains"
+    },
+    {
+      "id": "move_branch",
+      "target": "branch",
+      "complete_on": ["interact:branch"],
+      "hint": { "voice": "hint_branch", "voice_alt": "hint_branch_2", "target": "branch" },
+      "dialogue_on_complete": "rabbit_thanks",
+      "star": { "amount": 1, "reason": "helped_rabbit" }
+    },
+    {
+      "id": "grow_bridge",
+      "target": "river_gap",
+      "complete_on": ["power:flower:river_gap"],
+      "hint": { "voice": "hint_bridge", "voice_alt": "hint_bridge_2", "target": "river_gap" },
+      "dialogue_on_start": "river_broken_bridge",
+      "dialogue_on_complete": "bridge_grown"
+    },
+    {
+      "id": "hear_lumi",
+      "target": "lumi_zone",
+      "complete_on": ["zone:lumi_call"],
+      "hint": { "voice": "hint_keep_going", "voice_alt": "hint_keep_going_2", "target": "lumi_zone" },
+      "dialogue_on_complete": "lumi_crying"
+    },
+    {
+      "id": "free_lumi",
+      "target": "thorn_cage",
+      "complete_on": ["power:flower:thorn_cage"],
+      "hint": { "voice": "hint_thorns", "voice_alt": "hint_thorns_2", "target": "thorn_cage" }
+    }
+  ]
+}
