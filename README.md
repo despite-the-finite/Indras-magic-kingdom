@@ -19,8 +19,9 @@ All four modes, the whole character lifecycle. Status: [docs/VERTICAL_SLICE_PLAN
 Controls — **keyboard:** ←/→ or A/D walk, Space jump, E/Enter magic (uses whatever the glowing object needs), Q cycle power · **mouse/touch:** tap the ground to walk,
 tap a glowing object to walk there and use it, big on-screen buttons · **gamepad:** stick, A jump, X magic, Y cycle power.
 
-Every normal launch opens on the Entropic Labs logo (`game/assets/video/entropic_ident.ogv`, played by
-`game/src/boot/ident.gd`), then fades into the menu. Any tap, click, key or pad button skips it. Dev launches
+Every normal launch opens on the Entropic Labs logo and its sound (`game/assets/video/entropic_ident.ogv`, played by
+`game/src/boot/ident.gd`), then fades into the menu. Any tap, click, key or pad button skips it. In the web build it first shows
+"Tap to begin", because browsers hold audio back until the player interacts. Dev launches
 (`--scene`, `--shot`, `--skipintro`, `--noident`) and headless runs skip it automatically.
 
 ## For developers
