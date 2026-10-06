@@ -11,9 +11,13 @@ var _tabs: Dictionary = {}
 var _cards: Array[OptionCard] = []
 var _panel: Panel
 var _t := 0.0
+var _return_to := "castle"            # the magic mirror inside the castle sends her back where she was
+var _return_params: Dictionary = {}
 
 
 func _ready() -> void:
+	_return_to = String(Router.params.get("return_to", "castle"))
+	_return_params = Router.params.get("return_params", {})
 	appearance = GameState.appearance().duplicate(true)
 	EnvKit.apply(self, "rainbow_sky", {"fog_density": 0.002})
 	_build_stage()
@@ -173,7 +177,7 @@ func _done() -> void:
 	princess.play("celebrate")
 	Fx.star_shower(self, Vector3(-1.8, 4.0, 0), 50)
 	await Dialogue.play("customize_done")
-	Router.go("castle", {}, "page")
+	Router.go(_return_to, _return_params.duplicate(), "page")
 
 
 # =============================================================================

@@ -120,6 +120,29 @@ static func stable(parent: Node3D, pos: Vector3, open: bool) -> Dictionary:
 	return {"node": n, "door_l": door_l, "door_r": door_r, "glow": glow}
 
 
+## Garden gate on the play lane: two pillars, a rose arch and a glowing path toward the castle doors.
+static func garden_gate(parent: Node3D, pos: Vector3) -> Node3D:
+	var n := Build.pivot(parent, pos)
+	var stone := _stone()
+	for sx in [-1.0, 1.0]:
+		Build.box(n, Vector3(0.7, 3.2, 0.7), Vector3(sx * 2.2, 1.6, 0), stone)
+		Build.box(n, Vector3(0.9, 0.25, 0.9), Vector3(sx * 2.2, 3.3, 0), Mat.toon(Color("#e8c8f0"), {"outline": false}))
+		Build.sphere(n, 0.32, Vector3(sx * 2.2, 3.7, 0), Mat.glowing(Mat.SUN, 1.2, {"pulse": 0.4, "outline": false}), Vector3.ONE, 12)
+		ForestProps.bush(n, Vector3(sx * 3.1, 0.0, 0.4), 0.8, Color("#2f9a5a"), Mat.PINK)
+	var arch := MeshInstance3D.new()
+	arch.mesh = Build.arc_ribbon(2.4, 0.5, 180.0, 36)
+	arch.material_override = Mat.toon_grad(Color("#3fae6a"), Color("#8fe89a"), 1.5, 4.0, {"outline": 0.01, "rim_amount": 0.3, "gradient_amount": 1.0, "two_sided": true})
+	arch.position = Vector3(0, 3.1, 0)
+	n.add_child(arch)
+	for i in 7:
+		var a := deg_to_rad(15.0 + i * 25.0)
+		ForestProps.flower(n, Vector3(cos(a) * 2.4, 3.1 + sin(a) * 2.4, 0.3), [Mat.PINK, Color.WHITE, Mat.SUN][i % 3], 0.9)
+	# a glowing welcome mat so the spot reads as "go in here"
+	Build.cyl(n, 1.3, 1.3, 0.04, Vector3(0, 0.02, 1.7), Mat.glowing(Color("#ffd9f0"), 0.7, {"pulse": 0.5, "outline": false}), 24)
+	Fx.aura(n, Color(1, 0.9, 1), 14, 0.9).position = Vector3(0, 1.4, 1.2)
+	return n
+
+
 static func lock_icon(parent: Node3D, pos: Vector3) -> Node3D:
 	## sleeping-place marker: a small golden padlock that gently glows
 	var n := Build.pivot(parent, pos)

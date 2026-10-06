@@ -4,6 +4,10 @@ extends Node
 ##
 ## Each line drives: voice audio, subtitle UI, and the speaking character's animation/emotion via Events.character_cue.
 
+## A tap/press skips the current line only after this long, so a child drumming on the screen cannot
+## accidentally skip the words she needs to hear.
+const SKIP_GRACE := 1.0
+
 var blocking := false     # true while a story sequence is playing (player input is frozen)
 var speaking := false     # true while any line (including hints/barks) is playing
 var _skip := false
@@ -52,12 +56,16 @@ func _play_line(ln: Dictionary, opts: Dictionary) -> void:
 	Events.dialogue_line_started.emit(ln)
 	Events.character_cue.emit(ln.get("character", "narrator"), ln.get("animation", ""), ln.get("emotion", ""))
 	var dur := Audio.play_voice(ln)
-	var wait := dur + float(opts.get("line_gap", 0.35))
+	var gap := float(opts.get("line_gap", 0.35))
+	var wait := dur + gap
+	# text-to-speech can run a little longer than our estimate: keep the line up while the device is still
+	# talking (with a sane ceiling in case an engine never reports the end)
+	var ceiling := maxf(wait * 2.5, wait + 4.0)
 	var t := 0.0
-	while t < wait:
+	while t < wait or (Audio.voice_playing() and t < ceiling):
 		await get_tree().process_frame
 		t += get_process_delta_time()
-		if _skip and t > 0.55:
+		if _skip and t > SKIP_GRACE:
 			break
 	Audio.stop_voice()
 	GameState.mark_dialogue_seen(ln.id)

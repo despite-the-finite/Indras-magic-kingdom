@@ -26,13 +26,19 @@ data/dialogue/*.json ──► tools/voice/generate.mjs ──► game/assets/au
 
 Retries with exponential backoff on 429/5xx. `previous_text`/`next_text` are sent for lines in the same sequence so prosody flows naturally.
 
-## Runtime lookup order (`Audio.voice_stream`)
+## Runtime lookup order (`Audio.play_voice`)
 
 1. `res://assets/audio/vo/<id>.mp3` (or `.ogg`/`.wav`) — the real recording
 2. `res://assets/audio/vo/_ph/<id>.wav` — offline placeholder babble (`generate.mjs --placeholder`, not committed)
-3. nothing → the line still plays with a reading-time estimate, portrait + subtitles + character animation
+3. **the device's text-to-speech** reads the line's text aloud (`DisplayServer.tts_speak`; Windows SAPI, macOS, Linux
+   speech-dispatcher, and the Web Speech API in browsers). `Audio.TTS_CAST` gives each character its own pitch and pace
+   (narrator slow and low, Lumi high and bright...) and the best English voices on the device are cast automatically
+   (`Audio.TTS_PREFERRED`). The dialogue bar stays up while the engine is still talking.
+4. nothing (headless, or a device with no voices) → the line still plays with a reading-time estimate, portrait + subtitles + character animation
 
-So development never depends on API availability, and a missing file never blocks the story.
+So a non-reader always hears every line from day one, development never depends on API availability, and a missing file never
+blocks the story. Dropping real recordings into `vo/` replaces the synthetic voice line by line with no code change.
+The project setting `audio/general/text_to_speech` must stay on (it is).
 
 ## Other tooling
 

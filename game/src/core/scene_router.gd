@@ -6,6 +6,7 @@ const SCENES := {
 	"menu":           "res://src/ui/main_menu.gd",
 	"customize":      "res://src/ui/customize_screen.gd",
 	"castle":         "res://src/world/castle_hub.gd",
+	"castle_inside":  "res://src/world/castle_inside.gd",
 	"map":            "res://src/world/world_map.gd",
 	"forest_rescue":  "res://src/world/forest_level.gd",
 	"moonlit_forest": "res://src/world/moonlit_level.gd",

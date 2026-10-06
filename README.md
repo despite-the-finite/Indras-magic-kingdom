@@ -7,7 +7,7 @@ go on friendship quests together, and play mini adventures with them. Voice-firs
 
 ## The vertical slice (playable now)
 
-Menu → princess creator → castle → magic map → **Enchanted Forest: The Lost Unicorn** → rescue Lumi → **castle stable + care** (brush, feed, hug) →
+Menu → princess creator → castle (with an **explorable interior**: great hall, throne room, bedroom, kitchen) → magic map → **Enchanted Forest: The Lost Unicorn** → rescue Lumi → **castle stable + care** (brush, feed, hug) →
 Lumi asks for help → **Friendship Quest: Moonflower for Mama** (cooperative puzzles) → **Rainbow Ride with Lumi** mini adventure.
 All four modes, the whole character lifecycle. Status: [docs/VERTICAL_SLICE_PLAN.md](docs/VERTICAL_SLICE_PLAN.md).
 
@@ -16,8 +16,12 @@ All four modes, the whole character lifecycle. Status: [docs/VERTICAL_SLICE_PLAN
 1. Install **Godot 4.7.2** (standard, not .NET): <https://godotengine.org/download>
 2. Open `game/project.godot` in the editor and press ▶ — or from a terminal: `godot --path game`
 
-Controls — **keyboard:** ←/→ or A/D walk, Space jump, E/Enter magic (uses whatever the glowing object needs), Q cycle power · **mouse/touch:** tap the ground to walk,
+Controls — **keyboard:** ←/→ or A/D walk, **↑** (or W / Space) jump, E/Enter magic (uses whatever the glowing object needs), Q cycle power · **mouse/touch:** tap the ground to walk,
 tap a glowing object to walk there and use it, big on-screen buttons · **gamepad:** stick, A jump, X magic, Y cycle power.
+
+**Voice:** every spoken line plays a recording from `game/assets/audio/vo/` when one exists, and otherwise is read aloud by the device's
+own text-to-speech (Windows, macOS, and browsers), so a child who cannot read never has to. Real recordings are generated with the
+ElevenLabs pipeline ([docs/VOICE_PIPELINE.md](docs/VOICE_PIPELINE.md)) and simply take over once they are in the folder.
 
 Every normal launch opens on the Entropic Labs logo and its sound (`game/assets/video/entropic_ident.ogv`, played by
 `game/src/boot/ident.gd`), then fades into the menu. Any tap, click, key or pad button skips it. In the web build it first shows
@@ -29,14 +33,14 @@ Every normal launch opens on the Entropic Labs logo and its sound (`game/assets/
 | Task | Command |
 |---|---|
 | Validate all content | `godot --headless --path game -- --check` |
-| Whole-slice automated playthrough (41 checks) | `godot --headless --path game -- --playthrough` |
+| Whole-slice automated playthrough (68 checks) | `godot --headless --path game -- --playthrough` |
 | Render any scene/state to a PNG | `bash tools/dev/shot.sh castle --scene=castle --preset=at_castle` |
 | Jump to a story state | `godot --path game -- --scene=stable --preset=at_castle` (presets: `fresh rescued at_castle cared quest_ready quest_done crown5`) |
 | Regenerate placeholder audio | `node tools/audio/synth.mjs` |
 | Generate ElevenLabs voice-over | `node tools/voice/generate.mjs --dry-run` then without `--dry-run` ([docs](docs/VOICE_PIPELINE.md)) |
 | Export for the web | see [tools/dev/README.md](tools/dev/README.md) |
 
-Dev flags after `--`: `--scene=<menu|customize|castle|map|forest_rescue|moonlit_forest|stable|rainbow_ride|dev_rigs>`, `--preset=<state>`, `--skipintro`, `--shot=<png> --shot-delay=<s>`.
+Dev flags after `--`: `--scene=<menu|customize|castle|castle_inside|map|forest_rescue|moonlit_forest|stable|rainbow_ride|dev_rigs>`, `--preset=<state>`, `--skipintro`, `--shot=<png> --shot-delay=<s>`.
 
 ## Documentation
 
@@ -50,6 +54,7 @@ Dev flags after `--`: `--scene=<menu|customize|castle|map|forest_rescue|moonlit_
 | [VOICE_PIPELINE](docs/VOICE_PIPELINE.md) | ElevenLabs generation without exposing credentials |
 | [VERTICAL_SLICE_PLAN](docs/VERTICAL_SLICE_PLAN.md) | the 25 steps and their status |
 | [CHILD_TESTING](docs/CHILD_TESTING.md) | how to test like a 4-year-old |
+| [PLAYTEST_NOTES](docs/PLAYTEST_NOTES.md) | the full-game test pass: what was fixed, what to do next |
 
 ## Repository layout
 

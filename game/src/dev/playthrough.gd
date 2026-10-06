@@ -88,6 +88,8 @@ func run() -> void:
 	if from in ["intro", "rescue", "care", "friendship"]:
 		await _part_friendship()
 	await _part_ride()
+	await _part_castle_inside()
+	_part_voice()
 	print("=== DONE: %d checks, %d failures, stars=%d ===" % [steps_done, failures, GameState.stars()])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -118,10 +120,19 @@ func _part_rescue() -> void:
 		await _until(func(): return not Dialogue.blocking and not player.busy, 60.0, "player free before " + s.id)
 		var before := Quests.step_id()
 		check(before == s.id, "quest step reached: " + s.id)
+		if s.id == "grow_bridge":
+			# a child who runs at the river before the bridge exists must bump, not fall in
+			player.teleport(Vector3(level.GAP_X0 - 2.5, level.ground_y(level.GAP_X0 - 2.5) + 0.3, 0))
+			await _walk(player, 1.0, 1.4)
+			check(player.global_position.y > -1.0 and not player._rescuing, "river edge holds before the bridge grows (x=%.1f y=%.1f)" % [player.global_position.x, player.global_position.y])
 		await _solve(level, player, s)
 		if s.id == "grow_bridge":
 			await _until(func(): return level._bridge_built, 10.0, "bridge")
 			await get_tree().create_timer(1.6).timeout
+			# ...and once it has grown she can simply walk across
+			player.teleport(Vector3(level.GAP_X0 - 2.0, level.ground_y(level.GAP_X0 - 2.0) + 0.3, 0))
+			await _walk(player, 1.0, 2.8)
+			check(player.global_position.x > level.GAP_X1 + 0.5 and player.global_position.y > -1.0 and not player._rescuing, "walked across the vine bridge (x=%.1f y=%.1f)" % [player.global_position.x, player.global_position.y])
 	print("[4] rescue cinematic -> castle")
 	await _until(func(): return Router.current_id == "castle", 120.0, "return to castle after rescue")
 	check(GameState.stage("lumi") >= GameState.Stage.RESCUED, "Lumi RESCUED")
@@ -132,8 +143,21 @@ func _part_rescue() -> void:
 	check(GameState.feature_unlocked("unicorn_stable"), "stable unlocked (castle visibly changes)")
 
 
+## Hold a direction key for `seconds` of game time (the way a child leans on the arrow key).
+func _walk(player: Player, dir: float, seconds: float) -> void:
+	var action := "move_right" if dir > 0.0 else "move_left"
+	Input.action_press(action)
+	var t := 0.0
+	while t < seconds:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+	Input.action_release(action)
+	await _frames(3)
+
+
 ## Walk to a quest step's target and use it the way a child would (walk close, press the magic button).
-func _solve(level: Node, player: Player, s: Dictionary) -> void:
+## `stand_at` overrides where she stands when she presses the button.
+func _solve(level: Node, player: Player, s: Dictionary, stand_at: float = NAN) -> void:
 	var before := Quests.step_id()
 	var node := _target_node(String(s.target))
 	if node == null:
@@ -143,6 +167,8 @@ func _solve(level: Node, player: Player, s: Dictionary) -> void:
 	var it := _find(String(s.target))
 	var tx := node.global_position.x
 	var stand := tx - (1.5 if it != null and it.kind != "touch" else 0.0)
+	if not is_nan(stand_at):
+		stand = stand_at
 	player.teleport(Vector3(stand, level.ground_y(stand) + 0.3, 0))
 	if level.companion:
 		level.companion.global_position = Vector3(stand - 2.0, level.ground_y(stand) + 0.3, 0)
@@ -189,6 +215,21 @@ func _part_friendship() -> void:
 	for s in Content.quest("moonflower_for_mama").steps:
 		await _until(func(): return not Dialogue.blocking and not player.busy, 90.0, "free before " + String(s.id))
 		check(Quests.step_id() == s.id, "quest step reached: " + String(s.id))
+		if s.id == "cross_ledge":
+			# THE reported bug: she runs right up to the ledge, asks for the rainbow there, and must neither
+			# fall through the cliff nor end up boxed in behind the bridge
+			var edge: float = level.CLIFF_X
+			player.teleport(Vector3(edge - 3.0, level.ground_y(edge - 3.0) + 0.3, 0))
+			await _walk(player, 1.0, 1.6)
+			check(player.global_position.y > -1.0 and player.global_position.x < edge and not player._rescuing, "cliff face is solid: no falling through the ledge (x=%.1f y=%.1f)" % [player.global_position.x, player.global_position.y])
+			await _solve(level, player, s, player.global_position.x)
+			await _until(func(): return not player.is_gliding() and not player.busy and not Dialogue.blocking, 30.0, "rainbow settles")
+			var on_bridge: float = level.rainbow_y(player.global_position.x)
+			check(player.global_position.y >= on_bridge - 0.3, "rainbow lifted her onto the bridge instead of trapping her (y=%.2f bridge=%.2f)" % [player.global_position.y, on_bridge])
+			await _walk(player, 1.0, 2.4)
+			check(player.global_position.x > edge + 1.5 and player.global_position.y > 2.5 and not player._rescuing, "walked up the rainbow onto the ledge (x=%.1f y=%.1f)" % [player.global_position.x, player.global_position.y])
+			check(level.companion.global_position.y > -1.0, "Lumi did not fall either")
+			continue
 		await _solve(level, player, s)
 	await _until(func(): return Router.current_id == "castle" and GameState.stage("lumi") == GameState.Stage.QUEST_DONE, 180.0, "finale -> castle")
 	check(GameState.stage("lumi") == GameState.Stage.QUEST_DONE, "Friendship Quest complete (QUEST_DONE)")
@@ -211,3 +252,68 @@ func _part_ride() -> void:
 	await _until(func(): return ride._results != null, 90.0, "ride results")
 	check(ride._results != null, "ride ends with a celebration and results")
 	check(GameState.data.minigames.has("rainbow_ride"), "mini adventure recorded")
+
+
+# ---------------------------------------------------------------- the castle interior
+func _part_castle_inside() -> void:
+	print("[9] inside the castle")
+	Router.go_now("castle", {"skipintro": true})
+	await _scene_ready("castle")
+	check(_find("castle_door") != null, "the garden gate leads inside the castle")
+	Router.go_now("castle_inside", {"skipintro": true})
+	await _scene_ready("castle_inside")
+	var level: Node = Router.current
+	var player: Player = level.player
+	for id in ["front_door", "music_box", "painting", "throne", "mirror", "bed", "toy_box", "oven", "cookie_jar"]:
+		check(_find(id) != null, "room toy exists: " + id)
+	check(level.lumi_w != null, "Lumi wanders the halls once she lives here")
+	# walk the whole hallway: four rooms, no walls in the way, no falling
+	player.teleport(Vector3(3.0, 0.3, 0))
+	await _walk(player, 1.0, 12.5)
+	check(player.global_position.x > level.ROOM_W * 3.0 + 2.0 and player.global_position.x < level.ROOM_W * 4.0 and player.global_position.y > -1.0, "walked through every doorway to the kitchen and stopped at its wall (x=%.1f)" % player.global_position.x)
+	await _use(level, player, "oven")
+	await _until(func(): return level.cake_baked, 20.0, "cake")
+	check(level.cake_baked, "baked a rainbow cake")
+	await _use(level, player, "throne")
+	await _until(func(): return level.throne_used and not player.frozen and not player.is_gliding(), 40.0, "throne")
+	check(level.throne_used and absf(player.global_position.z) < 0.01 and player.global_position.y > -0.5, "sat on the throne and came back to the floor (y=%.2f)" % player.global_position.y)
+	await _use(level, player, "bed")
+	await _until(func(): return level.naps > 0 and not player.frozen and not player.is_gliding(), 40.0, "nap")
+	check(level.naps > 0 and absf(player.global_position.z) < 0.01, "took a nap and woke up on the floor")
+	var stars_before := GameState.stars()
+	await _use(level, player, "painting")
+	await _until(func(): return GameState.stars() > stars_before, 20.0, "secret star")
+	check(GameState.secret_found("castle_painting"), "found the secret behind the painting")
+	await _use(level, player, "front_door")
+	await _until(func(): return Router.current_id == "castle", 30.0, "back to the garden")
+	check(Router.current_id == "castle", "the front door leads back to the garden")
+
+
+func _use(level: Node, player: Player, id: String) -> void:
+	var it := _find(id)
+	if it == null:
+		failures += 1
+		printerr("  missing interactable ", id)
+		return
+	await _until(func(): return not player.controls_locked() and not level._story_busy, 30.0, "free for " + id)
+	player.teleport(Vector3(it.global_position.x - 0.8, 0.3, 0))
+	await _frames(6)
+	await _until(func(): return player.focus == it, 10.0, "focus " + id)
+	player.try_act()
+	await _frames(3)
+
+
+# ---------------------------------------------------------------- voice
+func _part_voice() -> void:
+	print("[10] every line has a voice path")
+	var est: float = Audio.play_voice({"id": "no_such_line", "character": "narrator", "text": "Hello little princess, shall we go?"})
+	check(est > 1.0, "a line without a recording still gets a spoken-length wait (%.1fs)" % est)
+	check(bool(ProjectSettings.get_setting("audio/general/text_to_speech", false)), "text-to-speech is enabled in the project")
+	check(InputMap.action_has_event("jump", _key(KEY_UP)), "the UP arrow jumps")
+	check(InputMap.action_has_event("jump", _key(KEY_SPACE)), "space still jumps")
+
+
+func _key(code: Key) -> InputEventKey:
+	var e := InputEventKey.new()
+	e.physical_keycode = code
+	return e

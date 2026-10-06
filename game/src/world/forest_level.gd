@@ -11,6 +11,7 @@ var hollow_glow: Node3D
 var wish_count := 0
 var _bridge_built := false
 var _caged := true
+var _gap_guard: StaticBody3D
 
 const GAP_X0 := 102.0
 const GAP_X1 := 110.0
@@ -118,6 +119,18 @@ func _river() -> void:
 	for i in 5:
 		var pad := Build.cyl(self, 0.42, 0.42, 0.04, Vector3(GAP_X0 + 1.5 + i * 1.5, -1.42, 1.5 + (i % 2) * 1.6), Mat.toon(Color("#5fd68a"), {"outline": false}), 14)
 		pad.rotation.y = i
+	# until the vine bridge grows, an invisible guard stops little feet at the river's edge: bumping into
+	# "can't go" reads far better to a 4-year-old than falling in again and again
+	_gap_guard = StaticBody3D.new()
+	_gap_guard.name = "RiverGuard"
+	_gap_guard.collision_layer = 1
+	var gcs := CollisionShape3D.new()
+	var gbs := BoxShape3D.new()
+	gbs.size = Vector3(0.3, 2.6, 2.4)
+	gcs.shape = gbs
+	_gap_guard.add_child(gcs)
+	_gap_guard.position = Vector3(GAP_X0 + 0.15, terrain.height_at(GAP_X0) + 1.3, 0)
+	add_child(_gap_guard)
 	# a broken bridge: stubs on each side
 	var wood := Mat.toon(Color("#b98a68"), {"outline": 0.008})
 	for k in 3:
@@ -434,6 +447,9 @@ func _grow_bridge() -> void:
 	sb.add_child(cs)
 	sb.position = Vector3((x0 + x1) * 0.5, y0 - 0.17, 0)
 	add_child(sb)
+	if _gap_guard and is_instance_valid(_gap_guard):
+		_gap_guard.queue_free()
+		_gap_guard = null
 	Audio.sfx("chime_up", -2.0)
 	Fx.flower_burst(self, Vector3(106.0, y0 + 0.6, 0), [], 30)
 	Events.custom_event.emit("bridge_grown")

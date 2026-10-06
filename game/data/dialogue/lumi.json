@@ -60,7 +60,8 @@
     ],
 
     "ride_intro": [
-      { "id": "ride_intro_01", "emotion": "excited", "animation": "happy_jump", "text": "Let's go for a rainbow ride! Hold on tight!" }
+      { "id": "ride_intro_01", "emotion": "excited", "animation": "happy_jump", "text": "Let's go for a rainbow ride! Hold on tight!" },
+      { "id": "ride_intro_02", "character": "narrator", "emotion": "excited", "text": "Tap the screen, or press up, to jump over the water and catch the stars!" }
     ],
     "ride_outro": [
       { "id": "ride_outro_01", "emotion": "joyful", "animation": "happy_jump", "text": "That was so much fun! Let's do it again!" }

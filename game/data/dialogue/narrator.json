@@ -2,6 +2,64 @@
   "defaults": { "character": "narrator", "emotion": "warm", "once": false },
   "sequences": {
 
+    "menu_intro": [
+      { "id": "menu_intro_01", "emotion": "excited", "text": "Hello! Tap the big pink button, to start playing!" }
+    ],
+    "castle_explore_tip": [
+      { "id": "castle_explore_tip_01", "emotion": "gentle", "once": true, "text": "Your castle has rooms to explore! Walk to the garden gate, and tap it to go inside." }
+    ],
+
+    "castle_inside_intro": [
+      { "id": "castle_inside_intro_01", "emotion": "wonder", "once": true, "text": "Welcome inside your castle! Tap anything that glows, and see what it does." },
+      { "id": "castle_inside_intro_02", "emotion": "gentle", "once": true, "text": "Walk that way to find the throne room, your bedroom, and the kitchen." }
+    ],
+    "castle_inside_hint": [
+      { "id": "castle_inside_hint_01", "kind": "hint", "text": "Tap something that glows!" }
+    ],
+    "room_great_hall": [
+      { "id": "room_great_hall_01", "emotion": "gentle", "once": true, "text": "This is the great hall. Tap the music box, to make Flutter dance." }
+    ],
+    "room_throne": [
+      { "id": "room_throne_01", "emotion": "excited", "once": true, "text": "The throne room! Tap the throne, to sit like a queen. The magic mirror can change your dress." }
+    ],
+    "room_bedroom": [
+      { "id": "room_bedroom_01", "emotion": "gentle", "once": true, "text": "Your bedroom! Tap the bed for a cozy nap, or the toy box to play." }
+    ],
+    "room_kitchen": [
+      { "id": "room_kitchen_01", "emotion": "excited", "once": true, "text": "The kitchen! Tap the oven, and bake a rainbow cake." }
+    ],
+    "throne_sit": [
+      { "id": "throne_sit_01", "character": "princess", "emotion": "proud", "animation": "cheer", "text": "I'm the queen of the castle!" }
+    ],
+    "mirror_look": [
+      { "id": "mirror_look_01", "emotion": "excited", "text": "Mirror, mirror! Let's pick a new look." }
+    ],
+    "bed_nap": [
+      { "id": "bed_nap_01", "character": "princess", "emotion": "sleepy", "text": "So cozy. Zzz..." },
+      { "id": "bed_nap_02", "character": "princess", "emotion": "joyful", "animation": "wave", "text": "Good morning! Let's play!" }
+    ],
+    "toy_box": [
+      { "id": "toy_box_01", "character": "princess", "emotion": "joyful", "animation": "giggle", "text": "My toys! Boing, boing, boing!" }
+    ],
+    "music_box": [
+      { "id": "music_box_01", "emotion": "wonder", "text": "A music box! Flutter loves to dance." }
+    ],
+    "cake_baked": [
+      { "id": "cake_baked_01", "character": "princess", "emotion": "joyful", "animation": "celebrate", "text": "A rainbow cake! Yummy!" }
+    ],
+    "cookie_jar": [
+      { "id": "cookie_jar_01", "character": "princess", "emotion": "giggle", "animation": "feed", "text": "Cookies! Mmm, crunch crunch." }
+    ],
+    "painting_secret": [
+      { "id": "painting_secret_01", "emotion": "wonder", "text": "A secret! A Magic Star was hiding behind the painting!" }
+    ],
+    "lumi_visits_kitchen": [
+      { "id": "lumi_visits_kitchen_01", "character": "lumi", "emotion": "excited", "animation": "happy_jump", "text": "Cake! Can I have some, please?" }
+    ],
+    "mini_results": [
+      { "id": "mini_results_01", "emotion": "joyful", "text": "Wonderful riding! Tap the rainbow to ride again, or the castle to go home." }
+    ],
+
     "customize_intro": [
       { "id": "customize_intro_01", "emotion": "excited", "text": "Hello, little princess! Let's make you look just right.", "trigger": "screen:customize" },
       { "id": "customize_intro_02", "text": "Tap the pictures you like!" }
@@ -33,7 +91,8 @@
 
     "forest_arrive": [
       { "id": "forest_arrive_01", "emotion": "wonder", "text": "The Enchanted Forest! Giant flowers, glowing mushrooms, and somewhere in here, a little lost unicorn.", "camera": "forest_reveal" },
-      { "id": "forest_arrive_02", "character": "princess", "emotion": "curious", "animation": "curious", "text": "Lumi? Lumi, where are you?" }
+      { "id": "forest_arrive_02", "character": "princess", "emotion": "curious", "animation": "curious", "text": "Lumi? Lumi, where are you?" },
+      { "id": "forest_arrive_03", "emotion": "gentle", "once": true, "text": "Walk with the arrows, and press up to jump. Let's go and find her!" }
     ],
     "found_hoofprints": [
       { "id": "found_hoofprints_01", "character": "princess", "emotion": "excited", "animation": "surprised", "text": "Sparkly hoofprints! Lumi must have come this way." }

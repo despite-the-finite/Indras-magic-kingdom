@@ -18,6 +18,7 @@ var _base_key := 1.0
 var _base_amb := 1.0
 var _base_fog := Color()
 var _rainbow_built := false
+var _rainbow_pts: Array[Vector3] = []
 
 const CLIFF_X := 25.5
 const CAVE_X0 := 78.0
@@ -227,18 +228,29 @@ func _on_line(line: Dictionary) -> void:
 # =============================================================================
 # puzzle reactions
 # =============================================================================
+## Lumi's rainbow bridge. Rules that keep a small child from ever getting stuck here:
+##  - it always starts *behind* wherever the princess is standing (never on top of her / in front of her),
+##  - it is one smooth collision surface (no seams to stutter over) that climbs to the ledge and then runs flat
+##    onto it, clearing the ledge's own cliff wall,
+##  - if she (or Lumi) is standing where the bridge appears, the rainbow lifts her gently onto it.
 func _make_rainbow() -> void:
 	if _rainbow_built:
 		return
 	_rainbow_built = true
 	Audio.sfx("rainbow_make")
-	var x0 := 19.5
-	var x1 := 27.4
+	var px := player.global_position.x
+	var x_top := CLIFF_X - 0.4                          # where the climb reaches ledge height
+	var x1 := CLIFF_X + 1.2                             # flat landing ends here, overlapping the ledge
+	var x0 := clampf(minf(px - 1.0, CLIFF_X - 6.0), 10.0, x_top - 4.0)
+	var y0 := ground_y(x0) + 0.06
+	var y1 := ground_y(CLIFF_X + 0.2) + 0.06
 	var pts: Array[Vector3] = []
 	var n := 24
 	for i in n + 1:
 		var t := float(i) / n
-		pts.append(Vector3(lerpf(x0, x1, t), 0.06 + smoothstep(0.0, 1.0, t) * 3.2, 0))
+		pts.append(Vector3(lerpf(x0, x_top, t), lerpf(y0, y1, smoothstep(0.0, 1.0, t)), 0))
+	pts.append(Vector3(x1, y1, 0))
+	_rainbow_pts = pts
 	var mesh := MeshExtra.path_ribbon(pts, 2.4)
 	var mi := MeshInstance3D.new()
 	mi.mesh = mesh
@@ -255,29 +267,67 @@ func _make_rainbow() -> void:
 	mat2.set_shader_parameter("reveal", 0.0)
 	mat2.set_shader_parameter("alpha", 0.55)
 	arch.material_override = mat2
-	arch.position = Vector3(23.0, 0.0, -3.0)
+	arch.position = Vector3((x0 + x1) * 0.5, 0.0, -3.0)
 	add_child(arch)
 	var tw := create_tween().set_parallel(true)
 	tw.tween_method(func(v): mat.set_shader_parameter("reveal", v), 0.0, 1.05, 1.5)
 	tw.tween_method(func(v): mat2.set_shader_parameter("reveal", v), 0.0, 1.05, 2.2)
-	# collision follows the curve
-	for i in n:
+	# one continuous walking surface (a thin trimesh, like the ground itself) instead of a chain of boxes
+	var sb := StaticBody3D.new()
+	sb.name = "RainbowBridge"
+	sb.collision_layer = 1
+	var faces := PackedVector3Array()
+	var hw := 1.2
+	for i in pts.size() - 1:
 		var a := pts[i]
 		var b := pts[i + 1]
-		var sb := StaticBody3D.new()
-		sb.collision_layer = 1
-		var cs := CollisionShape3D.new()
-		var bs := BoxShape3D.new()
-		var len := a.distance_to(b)
-		bs.size = Vector3(len + 0.08, 0.3, 2.4)
-		cs.shape = bs
-		sb.add_child(cs)
-		sb.position = (a + b) * 0.5 - Vector3(0, 0.15, 0)
-		sb.rotation.z = atan2(b.y - a.y, b.x - a.x)
-		add_child(sb)
+		faces.append_array([a + Vector3(0, 0, -hw), b + Vector3(0, 0, -hw), b + Vector3(0, 0, hw),
+			a + Vector3(0, 0, -hw), b + Vector3(0, 0, hw), a + Vector3(0, 0, hw)])
+	var cs := CollisionShape3D.new()
+	var shape := ConcavePolygonShape3D.new()
+	shape.set_faces(faces)
+	shape.backface_collision = true
+	cs.shape = shape
+	sb.add_child(cs)
+	add_child(sb)
 	for i in 8:
 		var p := pts[int(float(i) / 7.0 * n)]
 		get_tree().create_timer(0.18 * i).timeout.connect(func(): Fx.sparkle_burst(self, p + Vector3(0, 0.4, 0), Color(1, 0.9, 1), 10, 2.0, 0.28, 0.9))
+	# anyone standing inside the new bridge's span rides up onto it
+	_settle_on_rainbow()
+
+
+func rainbow_y(x: float) -> float:
+	## Height of the bridge surface at x (or -1000 when x is off the bridge).
+	if _rainbow_pts.size() < 2 or x < _rainbow_pts[0].x or x > _rainbow_pts[-1].x:
+		return -1000.0
+	for i in _rainbow_pts.size() - 1:
+		var a := _rainbow_pts[i]
+		var b := _rainbow_pts[i + 1]
+		if x >= a.x and x <= b.x:
+			return lerpf(a.y, b.y, (x - a.x) / maxf(b.x - a.x, 0.001))
+	return -1000.0
+
+
+func _settle_on_rainbow() -> void:
+	var x0 := _rainbow_pts[0].x
+	var top_x := CLIFF_X - 0.9                # stay clear of the ledge's own wall while gliding
+	var px := player.global_position.x
+	if px > x0 - 0.3 and px < CLIFF_X + 0.5:
+		var gx := clampf(px, x0 + 0.6, top_x)
+		var gy := rainbow_y(gx) + 0.08
+		if player.global_position.y < gy - 0.05:
+			Audio.sfx("chime_soft", -4.0, 1.2)
+			player.glide_to(Vector3(gx, gy, 0), 0.55)
+	if companion:
+		var cx := companion.global_position.x
+		if cx > x0 - 0.3 and cx < CLIFF_X + 0.5:
+			var gx2 := clampf(cx, x0 + 0.6, top_x)
+			var gy2 := rainbow_y(gx2) + 0.1
+			if companion.global_position.y < gy2 - 0.05:
+				Fx.sparkle_burst(self, companion.global_position + Vector3(0, 0.6, 0), Color("#e0c8ff"), 12, 2.0, 0.25, 0.7)
+				companion.global_position = Vector3(gx2, gy2, 0)
+				companion.velocity = Vector3.ZERO
 
 
 func _lift_log() -> void:

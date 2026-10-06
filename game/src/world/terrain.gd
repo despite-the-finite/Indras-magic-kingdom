@@ -12,6 +12,8 @@ var dirt_color := Color("#b58a6a")
 var dirt_dark := Color("#7a5a6a")
 var step := 0.5
 var path_color := Color(0, 0, 0, 0)     # optional cobblestone lane colour
+var color_drift := true                 # large-scale meadow colour variation (off for indoor floors)
+var end_walls := true                   # invisible walls on every segment's cliff face so nobody walks *through* a ledge
 
 
 static func build(parent: Node3D, segs: Array, opts: Dictionary = {}) -> Terrain:
@@ -128,14 +130,38 @@ func _make(parent: Node3D) -> void:
 	shape.backface_collision = true
 	cs.shape = shape
 	body.add_child(cs)
+	if end_walls:
+		_make_end_walls()
+
+
+## Solid cliff faces. Without these a ledge that is "too high to reach" has no side at all: the princess walks
+## straight into the drawn rock and falls through the world. The wall tops sit just under the floor so a
+## bridge laid over the edge is never snagged, and a child dropping *down* a ledge still can.
+func _make_end_walls() -> void:
+	var depth := -8.0
+	for s in segments:
+		for end in [0, 1]:
+			var x: float = s.x0 if end == 0 else s.x1
+			var y := _seg_h(s, x)
+			var top := y - 0.12
+			if top <= depth + 0.2:
+				continue
+			var cs := CollisionShape3D.new()
+			var bs := BoxShape3D.new()
+			bs.size = Vector3(0.3, top - depth, 2.4)
+			cs.shape = bs
+			cs.position = Vector3(x + (-0.15 if end == 0 else 0.15), (top + depth) * 0.5, 0)
+			cs.name = "Wall_%s_%d" % ["start" if end == 0 else "end", int(x)]
+			body.add_child(cs)
 
 
 func _top_col(z: float, x: float) -> Color:
 	var k := clampf(-z / 30.0, 0.0, 1.0)
 	var c := top_color.lerp(top_color_far, k)
 	# soft large-scale colour drift so the meadow isn't flat
-	var v := sin(x * 0.11) * 0.5 + sin(x * 0.047 + 1.7) * 0.5
-	c = c.lerp(Color("#c8e070") if v > 0.0 else Color("#2f9a8a"), absf(v) * 0.38)
+	if color_drift:
+		var v := sin(x * 0.11) * 0.5 + sin(x * 0.047 + 1.7) * 0.5
+		c = c.lerp(Color("#c8e070") if v > 0.0 else Color("#2f9a8a"), absf(v) * 0.38)
 	if path_color.a > 0.0 and z > -1.7 and z < 1.5:
 		c = c.lerp(path_color, 0.85)
 	return c

@@ -41,20 +41,20 @@ and persists all of it (versioned JSON, atomic write). `Events` announces every 
 | Data loading + validation | `core/content_db.gd` | JSON → dictionaries |
 | Save / progress / lifecycle | `core/game_state.gd` | one source of truth |
 | Settings (parent-owned) | `core/settings.gd` | separate file so reset never wipes them |
-| Audio | `core/audio_manager.gd` | buses, adaptive music crossfade, SFX pool, ambience layers, voice with ducking; every lookup tolerates missing files |
+| Audio | `core/audio_manager.gd` | buses, adaptive music crossfade, SFX pool, ambience layers, voice with ducking; lines without a recording are read by the device's text-to-speech |
 | Dialogue | `core/dialogue_system.gd` | plays sequences by id; drives voice, subtitle UI, and character animation cues |
 | Quests | `core/quest_system.gd` | step machine driven by event keys (`interact:`, `power:`, `zone:`, `custom:`); completes steps already satisfied (no soft-locks) |
 | Adaptive hints | `core/hint_system.gd` + `world/level_base.gd` | 4 layers, see below |
 | Scene routing + transitions | `core/scene_router.gd`, `shaders/transition.gdshader` | cloud wipe (travel) and page-turn (menus) |
 | Actor registry | `core/actor_registry.gd` | dialogue → `character_cue` → the right rig animates |
 | Input | `core/input_router.gd` | keyboard, gamepad, mouse and touch share actions; tracks idle time |
-| Player | `gameplay/player.gd` | coyote/jump-buffer, click-to-walk, tap-an-object-to-use, gentle Flutter fall rescue |
+| Player | `gameplay/player.gd` | coyote/jump-buffer, click-to-walk, tap-an-object-to-use, gentle Flutter fall rescue, `glide_to` for anything that must move her safely (rainbow lift, throne, bed) |
 | Companion | `gameplay/companion.gd` | follows, hops, warps if lost; performs data-defined ability |
 | Interaction | `gameplay/interactable.gd` | `touch` / `press` / `magic` / `coop`; quests listen by id |
 | Magic | `gameplay/magic_system.gd`, `magic_swirl.gd` | sparkles → swirl → reaction → flourish → character reaction |
 | Camera | `gameplay/follow_cam.gd` | automatic follow, look-ahead, dialogue framing, authored cinematic moves |
-| World kit | `world/terrain.gd`, `forest_props.gd`, `castle_kit.gd`, `env_kit.gd` | procedural stand-ins (see ASSET_PIPELINE) |
-| Levels | `world/level_base.gd` → `forest_level`, `moonlit_level`, `castle_hub` | shared plumbing, story-specific reactions |
+| World kit | `world/terrain.gd`, `forest_props.gd`, `castle_kit.gd`, `env_kit.gd` | procedural stand-ins (see ASSET_PIPELINE); terrain adds solid cliff faces at every segment edge |
+| Levels | `world/level_base.gd` → `forest_level`, `moonlit_level`, `castle_hub`, `castle_inside` | shared plumbing, story-specific reactions; `castle_inside` is the explorable home (great hall, throne room, bedroom, kitchen) |
 | Care | `world/stable_scene.gd` | Mode 2 |
 | Mini adventures | `minigames/mini_adventure.gd` → `rainbow_ride.gd` | declared in `data/minigames/*.json` |
 | Characters | `characters/rig_base.gd` → `princess_rig`, `unicorn_rig`, `rabbit_rig`, `flutter` | procedural animation + shader-driven faces |
@@ -72,6 +72,7 @@ paused during dialogue, reset by any progress. Levels respond to `Events.hint_le
 4. **Direct** — a sparkling trail briefly shows the way (repeats every ~22 s until progress)
 
 Every level also has the safety net: *no fail state.* Falling → Flutter carries the princess back to the last safe spot with a giggle.
+Ledges and river edges are solid (terrain end walls, the forest's river guard until the bridge grows), so falling is rare rather than routine.
 
 ## The 2.5D approach
 
@@ -89,5 +90,5 @@ Instancing (MultiMesh) for grass and flowers; particle counts scale with the Par
 
 - `godot --headless --path game -- --check` — data validation.
 - `godot --headless --path game -- --playthrough [--from=rescue|care|friendship|ride]` — drives the real systems through the whole slice and asserts every
-  lifecycle transition (38 checks).
+  lifecycle transition (68 checks).
 - `tools/dev/shot.sh <name> --scene=<id> --preset=<state>` — renders any scene/state to `shots/<name>.png` for look-dev review.

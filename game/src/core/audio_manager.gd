@@ -7,9 +7,23 @@ extends Node
 ##   ambient  res://assets/audio/ambient/<id>.(ogg|mp3|wav)
 ##   voice    res://assets/audio/vo/<line_id>.(mp3|ogg|wav)   <- ElevenLabs-generated, cached in the project
 ##            res://assets/audio/vo/_ph/<line_id>.wav          <- placeholder speech (tools/voice/generate.mjs --placeholder)
+##            otherwise the device's own text-to-speech reads the line aloud (Windows SAPI, macOS, browsers' Web Speech),
+##            so a child who cannot read always hears every word even before any recording exists.
 
 const EXTS := ["ogg", "mp3", "wav"]
 const SFX_POOL := 14
+
+## Per-character text-to-speech colouring: pitch (0..2) and rate (1 = normal) applied to the chosen system voice.
+const TTS_CAST := {
+	"narrator": {"pitch": 1.0, "rate": 0.9},
+	"princess": {"pitch": 1.3, "rate": 1.0},
+	"lumi":     {"pitch": 1.5, "rate": 1.02},
+	"clover":   {"pitch": 1.45, "rate": 1.08},
+	"luna":     {"pitch": 0.85, "rate": 0.9},
+}
+## Preferred system voices, best first (female, clear, English). Anything else English is still fine.
+const TTS_PREFERRED := ["zira", "aria", "jenny", "hazel", "susan", "samantha", "karen", "moira", "google uk english female",
+	"google us english", "female", "en-us", "en-gb", "english"]
 
 var _music_a: AudioStreamPlayer
 var _music_b: AudioStreamPlayer
@@ -23,6 +37,13 @@ var _cache: Dictionary = {}        # path -> stream (or null when missing)
 var _music_tween: Tween
 var _duck_tween: Tween
 var _warned: Dictionary = {}
+var _tts_enabled := false          # project setting on + not headless
+var _tts_voices: Array = []        # system voices (Dictionary id/name/language)
+var _tts_cast: Dictionary = {}     # character -> system voice id
+var _tts_speaking := false
+var _tts_utterance := 0
+var _tts_next_probe := 0.0         # browsers deliver their voice list late; keep looking for a while
+var _tts_callbacks_set := false
 
 signal voice_finished
 
@@ -39,6 +60,7 @@ func _ready() -> void:
 	_voice.finished.connect(func(): voice_finished.emit())
 	Settings.changed.connect(apply_settings)
 	apply_settings()
+	_setup_tts()
 
 
 func _mk_player(bus: String) -> AudioStreamPlayer:
@@ -230,27 +252,125 @@ func voice_stream(line_id: String) -> AudioStream:
 	return s
 
 
-## Plays a dialogue line's voice. Returns its duration in seconds
-## (real audio length, or a reading-time estimate when no audio exists yet).
+## Plays a dialogue line's voice. Returns its (expected) duration in seconds:
+## the real recording's length, the reading-time estimate for text-to-speech (the dialogue system keeps
+## waiting while `voice_playing()` stays true), or the estimate alone when narration is switched off.
 func play_voice(line: Dictionary) -> float:
-	_voice.stop()
+	stop_voice()
 	var text: String = line.get("text", "")
-	var est := maxf(1.5, 0.7 + float(text.split(" ").size()) * 0.34)
+	var words := float(text.split(" ", false).size())
+	var est := maxf(1.5, 0.7 + words * 0.34)
 	if not Settings.narration:
 		return est
 	var s := voice_stream(line.get("id", ""))
-	if s == null:
-		return est
-	_voice.stream = s
-	_voice.pitch_scale = 1.0
-	_voice.play()
-	duck_music(-6.0, 0.15, s.get_length() + 0.2)
-	return s.get_length()
+	if s != null:
+		_voice.stream = s
+		_voice.pitch_scale = 1.0
+		_voice.play()
+		duck_music(-6.0, 0.15, s.get_length() + 0.2)
+		return s.get_length()
+	if _tts_say(String(line.get("character", "narrator")), text):
+		var tts_est := maxf(1.6, 0.8 + words * 0.42)
+		duck_music(-6.0, 0.15, tts_est + 0.4)
+		return tts_est
+	return est
 
 
 func stop_voice() -> void:
 	_voice.stop()
+	if _tts_speaking:
+		_tts_speaking = false
+		DisplayServer.tts_stop()
 
 
 func voice_playing() -> bool:
-	return _voice.playing
+	return _voice.playing or _tts_speaking
+
+
+# ---------------------------------------------------------------------------
+# text-to-speech fallback (no files needed)
+# ---------------------------------------------------------------------------
+func _setup_tts() -> void:
+	_tts_enabled = bool(ProjectSettings.get_setting("audio/general/text_to_speech", false)) and DisplayServer.get_name() != "headless"
+	if not _tts_enabled:
+		return
+	_probe_tts_voices()
+
+
+func _probe_tts_voices() -> void:
+	_tts_next_probe = Time.get_ticks_msec() / 1000.0 + 2.0
+	var voices: Array = DisplayServer.tts_get_voices()
+	if voices.is_empty():
+		return
+	_tts_voices = voices
+	_cast_tts_voices()
+	if not _tts_callbacks_set:
+		_tts_callbacks_set = true
+		DisplayServer.tts_set_utterance_callback(DisplayServer.TTS_UTTERANCE_ENDED, _on_tts_done)
+		DisplayServer.tts_set_utterance_callback(DisplayServer.TTS_UTTERANCE_CANCELED, _on_tts_done)
+	if OS.is_debug_build():
+		print("[Audio] text-to-speech ready: %d voices, cast=%s" % [voices.size(), _tts_cast])
+
+
+func tts_available() -> bool:
+	return _tts_enabled and not _tts_voices.is_empty()
+
+
+func _voice_score(v: Dictionary) -> int:
+	## Higher = nicer for a bedtime-story game. English first, then our preferred names, then anything.
+	var name := String(v.get("name", "")).to_lower()
+	var lang := String(v.get("language", "")).to_lower()
+	var score := 0
+	if lang.begins_with("en"):
+		score += 100
+	for i in TTS_PREFERRED.size():
+		if name.contains(TTS_PREFERRED[i]):
+			score += 50 - i
+			break
+	if name.contains("male") and not name.contains("female"):
+		score -= 20
+	return score
+
+
+func _cast_tts_voices() -> void:
+	var ranked := _tts_voices.duplicate()
+	ranked.sort_custom(func(a, b): return _voice_score(a) > _voice_score(b))
+	var ids: Array = []
+	for v in ranked:
+		ids.append(String(v.get("id", "")))
+	if ids.is_empty():
+		return
+	# narrator gets the best voice; the characters take the next ones so the cast sounds like different people,
+	# and pitch/rate differences (TTS_CAST) keep them apart even on a device with a single voice
+	_tts_cast = {
+		"narrator": ids[0],
+		"princess": ids[1 % ids.size()],
+		"lumi": ids[2 % ids.size()] if ids.size() > 2 else ids[1 % ids.size()],
+		"clover": ids[1 % ids.size()],
+		"luna": ids[0],
+	}
+
+
+func _tts_say(character: String, text: String) -> bool:
+	if not _tts_enabled or text.strip_edges() == "":
+		return false
+	if _tts_voices.is_empty():
+		if Time.get_ticks_msec() / 1000.0 >= _tts_next_probe:
+			_probe_tts_voices()
+		if _tts_voices.is_empty():
+			return false
+	var cast: Dictionary = TTS_CAST.get(character, TTS_CAST["narrator"])
+	var voice_id: String = _tts_cast.get(character, _tts_cast.get("narrator", ""))
+	var vol := int(clampf(Settings.voice * Settings.master, 0.0, 1.0) * 100.0)
+	if vol <= 0:
+		return false
+	_tts_utterance += 1
+	_tts_speaking = true
+	DisplayServer.tts_speak(text, voice_id, vol, float(cast.pitch), float(cast.rate), _tts_utterance, true)
+	return true
+
+
+func _on_tts_done(id: int) -> void:
+	if id == _tts_utterance:
+		_tts_speaking = false
+		voice_finished.emit()

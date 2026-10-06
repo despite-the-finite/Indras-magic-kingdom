@@ -58,6 +58,15 @@ const PRESETS := {
 		"fog_color": "#d8ccf8", "fog_density": 0.003,
 		"glow": 1.0, "bloom": 0.14, "exposure": 0.93, "saturation": 1.3, "contrast": 1.12,
 	},
+	"castle_inside": {
+		"sky_top": "#f0d8ff", "sky_mid": "#ffe6f4", "sky_horizon": "#fff4e6", "sky_ground": "#e8c8f0",
+		"sun_dir": Vector3(0.2, 0.6, -0.75), "sun_color": "#fff6d8", "cloud_cover": 0.3, "stars": 0.0, "moon": 0.0,
+		"key_dir": Vector3(-35, 20, 0), "key_color": "#fff0dc", "key_energy": 1.2,
+		"rim_dir": Vector3(-20, 200, 0), "rim_color": "#ffd0f0", "rim_energy": 0.5,
+		"ambient_energy": 1.35, "ambient_color": "#e8d0ff",
+		"fog_color": "#f0dcf8", "fog_density": 0.003,
+		"glow": 0.9, "bloom": 0.12, "exposure": 0.95, "saturation": 1.22, "contrast": 1.08,
+	},
 	"map_parchment": {
 		"sky_top": "#ffe9c8", "sky_mid": "#ffe0d0", "sky_horizon": "#fff4e0", "sky_ground": "#f0d0b8",
 		"sun_dir": Vector3(0.2, 0.7, -0.6), "sun_color": "#ffffff", "cloud_cover": 0.0, "stars": 0.0, "moon": 0.0,

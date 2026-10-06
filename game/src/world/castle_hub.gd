@@ -42,6 +42,8 @@ func _scenery() -> void:
 	castle_node = CastleKit.castle(self, Vector3(CASTLE_X, -0.2, -31.0))
 	castle_node.scale = Vector3.ONE * 1.75
 	CastleKit.fountain(self, Vector3(CASTLE_X, 0.0, -4.6))
+	# the garden gate on the lane: walk up to it and the castle doors open for her (see castle_inside.gd)
+	CastleKit.garden_gate(self, Vector3(CASTLE_X, terrain.height_at(CASTLE_X), -1.7))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 9
 	var x := -38.0
@@ -105,6 +107,13 @@ func _places() -> void:
 	door.one_shot = false
 	door.enabled = want_open
 	door.activated.connect(func(_p): _enter_stable())
+	# the castle's front door: the whole inside is hers to explore
+	var cd := Interactable.make(self, "castle_door", "press", "", Vector3(CASTLE_X, terrain.height_at(CASTLE_X), 0.0), 2.8)
+	cd.icon = "castle"
+	cd.halo_height = 3.0
+	cd.press_anim = "wave"
+	cd.one_shot = false
+	cd.activated.connect(func(_p): _enter_castle())
 	# the magic map
 	map_stand = Build.pivot(self, Vector3(2.0, terrain.height_at(2.0), -1.0))
 	var stone := Mat.toon_grad(Color("#c9a8e8"), Color("#f0e0ff"), 0.0, 1.2, {"outline": 0.01, "rim_amount": 0.4, "gradient_amount": 1.0})
@@ -189,10 +198,16 @@ func _after_ready() -> void:
 			await _lumi_asks_help()
 		"moonflower_done":
 			await _mama_arrives()
+		"from_inside":
+			pass
 		_:
 			if not GameState.flag("castle_intro_done"):
 				await _first_visit()
 	_set_goal_hint()
+	# the first time she is free in the garden, tell her the castle itself can be explored (once ever)
+	if arrival == "" and GameState.stage("lumi") >= GameState.Stage.AT_CASTLE and not GameState.dialogue_seen("castle_explore_tip_01"):
+		await get_tree().create_timer(1.0).timeout
+		Dialogue.play_async("castle_explore_tip")
 
 
 func _spawn_lumi() -> void:
@@ -370,6 +385,13 @@ func _enter_stable() -> void:
 	if _busy_story or not GameState.feature_unlocked("unicorn_stable"):
 		return
 	Router.go("stable", {}, "clouds")
+
+
+func _enter_castle() -> void:
+	if _busy_story:
+		return
+	Audio.sfx("door_open")
+	Router.go("castle_inside", {}, "clouds")
 
 
 func _level_process() -> void:

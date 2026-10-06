@@ -20,6 +20,11 @@ func _ready() -> void:
 	Audio.set_ambience(["forest_birds"])
 	if Router.params.has("parent"):
 		_open_parent()
+	else:
+		# a non-reader needs to be *told* where to start
+		await get_tree().create_timer(1.4).timeout
+		if is_inside_tree() and _parent_layer == null:
+			Dialogue.play_async("menu_intro")
 
 
 func _build_vista() -> void:

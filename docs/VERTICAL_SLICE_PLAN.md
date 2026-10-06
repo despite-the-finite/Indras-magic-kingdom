@@ -10,6 +10,7 @@ Status legend: ✅ working & covered by the automated playthrough · 🟡 workin
 | 1 | Main menu | ✅🟡 | `ui/main_menu.gd` |
 | 2 | Simple princess customization | ✅🟡 | `ui/customize_screen.gd` (9 categories, big cards, live preview) |
 | 3 | Castle introduction | ✅🟡 | `world/castle_hub.gd` `_first_visit` |
+| 3b | Explore inside the castle (great hall, throne, mirror → dress-up, bedroom nap, toy box, kitchen cake, secret star) | ✅🟡 | `world/castle_inside.gd` via the garden gate |
 | 4 | World map | ✅🟡 | `world/world_map.gd` |
 | 5 | Select Enchanted Forest | ✅ | map → `forest_rescue` |
 | 6 | Enter Lost Unicorn adventure | ✅ | `world/forest_level.gd` |
@@ -33,12 +34,12 @@ Status legend: ✅ working & covered by the automated playthrough · 🟡 workin
 | 24 | Return home | ✅ | Luna the mama arrives, Rainbow Magic given |
 | 25 | Unlock Lumi-themed mini adventure | ✅ | rainbow signpost → **Rainbow Ride** (`minigames/rainbow_ride.gd`) |
 
-Cross-cutting: adaptive 4-level hints ✅ · Flutter fall rescue ✅ · save/load ✅ · parent area with gate ✅ · settings (volumes, narration, subtitles, quality, reduce motion, touch) ✅ ·
+Cross-cutting: adaptive 4-level hints ✅ · Flutter fall rescue ✅ · spoken voice for every line (device text-to-speech until recordings exist) ✅ · solid ledges + a rainbow that can never trap her ✅ · save/load ✅ · parent area with gate ✅ · settings (volumes, narration, subtitles, quality, reduce motion, touch) ✅ ·
 data-driven characters/quests/dialogue ✅ · ElevenLabs pipeline ✅ (needs your key + voice ids) · placeholder audio ✅ · web export config ✅ (see below).
 
 ## Verification
 
-`godot --headless --path game -- --playthrough` → **41 checks, 0 failures**: steps 1–25 with every lifecycle transition (`DISCOVERED → RESCUED → AT_CASTLE → FRIENDS → QUEST_READY → QUEST_DONE`).
+`godot --headless --path game -- --playthrough` → **68 checks, 0 failures**: steps 1–25 (plus the castle interior, the ledge/river edge tests and the voice/controls checks) with every lifecycle transition (`DISCOVERED → RESCUED → AT_CASTLE → FRIENDS → QUEST_READY → QUEST_DONE`).
 
 ## Temporary stand-ins (each has a slot in `ASSET_PIPELINE.md`)
 

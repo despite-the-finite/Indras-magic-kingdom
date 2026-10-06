@@ -3,6 +3,7 @@ extends Node
 ## and tracks idle time + last-used device for the hint system and HUD.
 ##
 ## Actions:  move_left move_right move_up move_down  jump  magic  cycle_power  home  skip
+## (jump = Up arrow / W / Space / pad A, so "press up to jump" is true on every device)
 
 var _last_input_msec := 0
 var last_device := "keyboard"     # keyboard | mouse | touch | gamepad
@@ -15,11 +16,12 @@ func _ready() -> void:
 	_add("move_right", [_key(KEY_RIGHT), _key(KEY_D), _btn(JOY_BUTTON_DPAD_RIGHT), _axis(JOY_AXIS_LEFT_X, 1.0)])
 	_add("move_up",    [_key(KEY_UP), _key(KEY_W), _btn(JOY_BUTTON_DPAD_UP), _axis(JOY_AXIS_LEFT_Y, -1.0)])
 	_add("move_down",  [_key(KEY_DOWN), _key(KEY_S), _btn(JOY_BUTTON_DPAD_DOWN), _axis(JOY_AXIS_LEFT_Y, 1.0)])
-	_add("jump",       [_key(KEY_SPACE), _btn(JOY_BUTTON_A)])
+	# jump is the UP arrow first (what a small child reaches for), then W / Space / pad A / d-pad up
+	_add("jump",       [_key(KEY_UP), _key(KEY_W), _key(KEY_SPACE), _btn(JOY_BUTTON_A), _btn(JOY_BUTTON_DPAD_UP)])
 	_add("magic",      [_key(KEY_E), _key(KEY_ENTER), _key(KEY_KP_ENTER), _key(KEY_F), _btn(JOY_BUTTON_X)])
 	_add("cycle_power",[_key(KEY_Q), _key(KEY_TAB), _btn(JOY_BUTTON_Y)])
 	_add("home",       [_key(KEY_ESCAPE), _btn(JOY_BUTTON_START)])
-	_add("skip",       [_key(KEY_SPACE), _key(KEY_ENTER), _btn(JOY_BUTTON_A)])
+	_add("skip",       [_key(KEY_SPACE), _key(KEY_ENTER), _key(KEY_UP), _btn(JOY_BUTTON_A)])
 
 
 func _input(event: InputEvent) -> void:
@@ -36,7 +38,8 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and event.velocity.length() > 250.0:
 		_touch_activity()
 
-	# tap/skip advances story dialogue
+	# tap/skip advances story dialogue (DialogueSystem ignores it for the first second of a line, so a
+	# child drumming on the screen still hears what she needs to hear)
 	if Dialogue.blocking:
 		var tapped: bool = (event is InputEventMouseButton and event.pressed) or (event is InputEventScreenTouch and event.pressed)
 		if tapped or event.is_action_pressed("skip"):

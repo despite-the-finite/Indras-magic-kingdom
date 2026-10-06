@@ -103,6 +103,9 @@ func _show_results(earned: int, new_stars: int) -> void:
 	if new_stars > 0:
 		await get_tree().create_timer(0.5 + earned * 0.5).timeout
 		GameState.add_stars(new_stars, Vector3.ZERO, "mini_adventure")
+	await get_tree().create_timer(0.8).timeout
+	if is_inside_tree():
+		Dialogue.play_async("mini_results")
 
 
 class StarSlot extends Control:

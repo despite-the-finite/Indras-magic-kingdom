@@ -12,6 +12,10 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/bg_color=Color(0.99, 0.86, 0.93, 1)
 boot_splash/show_image=false
 
+[audio]
+
+general/text_to_speech=true
+
 [autoload]
 
 Events="*res://src/core/events.gd"

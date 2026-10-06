@@ -29,6 +29,7 @@ var _coyote := 0.0
 var _jump_buf := 0.0
 var _safe_timer := 0.0
 var _rescuing := false
+var _gliding := false
 var _click_x: Variant = null
 var _click_target: Interactable
 var _last_grounded := true
@@ -59,7 +60,7 @@ func _ready() -> void:
 
 
 func controls_locked() -> bool:
-	return frozen or busy or _rescuing or Dialogue.blocking or (cam != null and cam.in_cinematic())
+	return frozen or busy or _rescuing or _gliding or Dialogue.blocking or (cam != null and cam.in_cinematic())
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -114,7 +115,7 @@ func cycle_power() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if _rescuing:
+	if _rescuing or _gliding:
 		return
 	var locked := controls_locked()
 	var axis := 0.0
@@ -252,6 +253,39 @@ func teleport(pos: Vector3) -> void:
 	velocity = Vector3.ZERO
 	if cam:
 		cam.snap_to_target()
+
+
+## Carries the princess smoothly to `pos` with physics switched off (a rainbow lifting her, climbing onto a
+## throne...). Awaitable. Used wherever something solid appears underneath or around her so she can never
+## be left wedged inside it.
+func glide_to(pos: Vector3, duration: float = 0.5, sparkle: bool = true, hold: bool = false) -> void:
+	_gliding = true
+	velocity = Vector3.ZERO
+	_click_x = null
+	_click_target = null
+	var tw := create_tween()
+	tw.tween_property(self, "global_position", pos, maxf(duration, 0.05)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	if sparkle:
+		Fx.sparkle_burst(get_parent(), global_position + Vector3(0, 0.3, 0), Color(1, 0.9, 1), 10, 1.6, 0.22, 0.7)
+	await tw.finished
+	global_position = pos
+	velocity = Vector3.ZERO
+	if not hold:
+		release_glide()
+
+
+## Ends a held glide (she sat on a throne, napped on a bed...): physics takes over again from where she is.
+## Only call it when she is back on the play lane (z = 0) with something solid underneath.
+func release_glide() -> void:
+	global_position.z = 0.0
+	velocity = Vector3.ZERO
+	safe_pos = global_position
+	_safe_timer = 0.0
+	_gliding = false
+
+
+func is_gliding() -> bool:
+	return _gliding
 
 
 # ---- gentle fall recovery -------------------------------------------------------
